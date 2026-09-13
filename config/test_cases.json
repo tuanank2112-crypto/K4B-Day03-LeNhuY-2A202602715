@@ -1,0 +1,37 @@
+[
+  {
+    "id": "TC01",
+    "type": "direct_query",
+    "question": "Chào bạn, quán net mở cửa từ mấy giờ đến mấy giờ và có dịch vụ đồ ăn đêm không?",
+    "expected_behavior": "Chatbot trả lời trực tiếp từ thông tin chung của quán (mở cửa 24/7, phục vụ đồ ăn đêm), không cần gọi bất kỳ Tool nào.",
+    "complexity": "Low"
+  },
+  {
+    "id": "TC02",
+    "type": "single_tool_query",
+    "question": "Hiện tại khu VIP còn máy nào đang trống không, cấu hình và giá một giờ chơi là bao nhiêu?",
+    "expected_behavior": "Agent nhận diện nhu cầu tra cứu máy, tự động phát sinh Tool Call 'check_available_pcs' với tham số zone='VIP'.",
+    "complexity": "Medium"
+  },
+  {
+    "id": "TC03",
+    "type": "appointment_booking",
+    "question": "Đặt giúp tôi máy VIP-08 cho tài khoản hội viên NET2026 chơi trong 3 giờ.",
+    "expected_behavior": "Agent tự động phát sinh Tool Call 'book_gaming_pc' với customer_id='NET2026', pc_id='VIP-08', duration_hours=3.",
+    "complexity": "Medium"
+  },
+  {
+    "id": "TC04",
+    "type": "multi_step_reasoning",
+    "question": "Kiểm tra xem khu PRO_GAMING còn máy nào trống không, nếu còn máy PRO-01 thì đặt luôn máy đó 2 tiếng cho tài khoản NET2026.",
+    "expected_behavior": "Agent thực hiện chuỗi suy luận ReAct đa bước: Tra cứu danh sách máy khu PRO_GAMING trước, thấy máy PRO-01 đang trống thì tiếp tục gọi tool đặt máy.",
+    "complexity": "High"
+  },
+  {
+    "id": "TC05",
+    "type": "edge_case_handling",
+    "question": "Tôi muốn đặt máy số VIP-999 cho hội viên NET2026 chơi 2 tiếng.",
+    "expected_behavior": "Agent gọi tool đặt máy, nhận kết quả NOT_FOUND từ Tool (máy không tồn tại) và đưa ra phản hồi chính xác, không bịa đặt dữ liệu.",
+    "complexity": "Medium"
+  }
+]

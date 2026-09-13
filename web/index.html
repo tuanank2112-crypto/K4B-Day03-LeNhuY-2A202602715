@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cyber Cafe Booking & NITRO ReAct AI Agent</title>
+  <meta name="description" content="Hệ thống đặt máy Cyber Game thông minh hỗ trợ đặt nhiều máy cùng lúc và ReAct AI Agent qua giao thức Model Context Protocol (MCP).">
+  <!-- Google Fonts: Orbitron & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ambient Glow Effects -->
+  <div class="ambient-glow glow-cyan"></div>
+  <div class="ambient-glow glow-purple"></div>
+
+  <!-- Top Navigation Header (NITRO Style, Clean, No Address/Venue Name) -->
+  <header class="cyber-header">
+    <div class="header-left">
+      <div class="brand-logo">
+        <span class="logo-badge">NITRO AI</span>
+        <span class="logo-divider">/</span>
+        <div class="venue-info">
+          <h1 class="venue-title">CYBER GAMING HUB</h1>
+          <p class="venue-address">Hệ Thống Đặt Máy & ReAct Agentic System</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Stats Bar in Header -->
+    <div class="quick-stats-bar">
+      <div class="stat-pill">
+        <span class="stat-label">Tổng máy:</span>
+        <span class="stat-val" id="stat-total">32</span>
+      </div>
+      <div class="stat-pill stat-avail">
+        <span class="stat-label">Trống:</span>
+        <span class="stat-val" id="stat-available">13</span>
+      </div>
+      <div class="stat-pill stat-occ">
+        <span class="stat-label">Đang chơi:</span>
+        <span class="stat-val" id="stat-occupied">14</span>
+      </div>
+      <div class="stat-pill stat-booked">
+        <span class="stat-label">Đang đặt:</span>
+        <span class="stat-val" id="stat-booked">3</span>
+      </div>
+      <div class="stat-pill stat-maint">
+        <span class="stat-label">Bảo trì:</span>
+        <span class="stat-val" id="stat-maint">2</span>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <div class="user-header-id-pill" title="Mã ID tài khoản hội viên của bạn">
+        <span class="id-pill-icon">💳</span>
+        <span>ID HỘI VIÊN: <strong>NET2026</strong></span>
+      </div>
+      <button class="btn-demo-presentation" onclick="openDemoModal()">📋 BÁO CÁO DEMO (5 BƯỚC)</button>
+
+      <div class="pulse-indicator">
+        <span class="pulse-dot"></span>
+        <span class="pulse-text">MCP ONLINE</span>
+      </div>
+      <button class="ai-toggle-btn" onclick="toggleAIChat()">
+        <span class="ai-icon">⚡</span>
+        <span>NITRO AI AGENT</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Workspace -->
+  <main class="main-container">
+    <!-- Left / Center Section: 2D Seat Map & Visual Thumbnail -->
+    <section class="map-section">
+      
+      <!-- Top Floor Plan Banner with Small Arena Thumbnail Image -->
+      <div class="floor-top-banner">
+        <div class="arena-thumbnail-card" onclick="openImageModal()">
+          <img src="assets/cyber_arena_3d.jpg" alt="Không gian Cyber Arena" class="arena-thumb-img">
+          <div class="thumb-badge">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+            <span>Ảnh không gian</span>
+          </div>
+        </div>
+        <div class="banner-text-info">
+          <div class="banner-title">SƠ ĐỒ PHÒNG MÁY 2D (CHỌN ĐƯỢC NHIỀU MÁY)</div>
+          <p class="banner-desc">Nhấp vào một hoặc nhiều máy có màu <strong>Xám (Có thể chọn)</strong> để đặt chỗ theo nhóm/team. Nhấp vào máy bạn đã đặt để <strong>Đổi máy hoặc Hủy đặt</strong>.</p>
+        </div>
+        <div class="multi-select-indicator" id="multi-select-indicator">
+          <span>Đã chọn: <strong id="selected-count-badge">0</strong> máy</span>
+          <button class="clear-sel-btn" onclick="clearAllSelections()" style="display: none;" id="btn-clear-sel">Bỏ chọn</button>
+        </div>
+      </div>
+
+      <!-- 2D Floor Plan Grid (Primary, Large, Clear View) -->
+      <div class="map-view-container active">
+        <div class="zone-grid-layout">
+          <!-- Zone 1: VIP Alienware -->
+          <div class="zone-card zone-vip">
+            <div class="zone-header">
+              <div class="zone-badge">KHU VIP ALIENWARE</div>
+              <span class="zone-spec">i7-14700K | RTX 4070Ti | 240Hz Fast-IPS • 18.000đ/h</span>
+            </div>
+            <div class="seats-row" id="seats-vip"></div>
+          </div>
+
+          <!-- Zone 2: PRO GAMING ZOWIE -->
+          <div class="zone-card zone-pro">
+            <div class="zone-header">
+              <div class="zone-badge">KHU PRO GAMING THI ĐẤU</div>
+              <span class="zone-spec">i9-14900KS | RTX 4090 | BenQ ZOWIE 360Hz • 25.000đ/h</span>
+            </div>
+            <div class="seats-row" id="seats-pro"></div>
+          </div>
+
+          <!-- Zone 3: STANDARD -->
+          <div class="zone-card zone-standard">
+            <div class="zone-header">
+              <div class="zone-badge">KHU TIÊU CHUẨN (STANDARD)</div>
+              <span class="zone-spec">i5-13400F | RTX 3060 | 165Hz IPS • 10.000đ/h</span>
+            </div>
+            <div class="seats-row" id="seats-standard"></div>
+          </div>
+
+          <!-- Zone 4: STREAM ROOM -->
+          <div class="zone-card zone-stream">
+            <div class="zone-header">
+              <div class="zone-badge">PHÒNG STREAM CÁCH ÂM</div>
+              <span class="zone-spec">Dual PC (i9+RTX 4080) | Mic Shure SM7B • 45.000đ/h</span>
+            </div>
+            <div class="seats-row" id="seats-stream"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Legend Footer (Matching Screenshot) -->
+      <div class="legend-card">
+        <div class="legend-items">
+          <div class="legend-item">
+            <span class="legend-box color-available"></span>
+            <span>Có thể chọn</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-box color-selected"></span>
+            <span>Đã chọn (Đang chọn)</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-box color-occupied"></span>
+            <span>Đang sử dụng</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-box color-booked"></span>
+            <span>Đang đặt (Bởi bạn/khách)</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-box color-maintenance"></span>
+            <span>Không thể chọn / Bảo trì</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Action CTA Bar (Multi-seat aware) -->
+      <div class="action-cta-bar">
+        <div class="selected-summary" id="selected-summary">
+          <div class="selection-empty">Chưa chọn máy nào. Hãy nhấn vào các ô máy trên sơ đồ để chọn 1 hoặc nhiều máy!</div>
+        </div>
+        <button id="btn-confirm-selection" class="btn-confirm-selection" disabled onclick="openBookingModal()">
+          <span class="btn-sparkle">✦</span>
+          <span>XÁC NHẬN CHỌN CHỖ</span>
+        </button>
+      </div>
+
+      <!-- Compact Square ReAct Trace Logs Box (Góc dưới bản đồ) -->
+      <div class="corner-trace-box" id="corner-trace-box">
+        <div class="corner-trace-header">
+          <div class="corner-trace-title">
+            <span class="pulse-dot-cyan"></span>
+            <span>A.I EXECUTION STREAM LOGS</span>
+          </div>
+          <div class="corner-trace-controls">
+            <button class="corner-btn" onclick="clearTraceStream()" title="Xóa logs">🗑️</button>
+            <button class="corner-btn" onclick="openTraceModal()" title="Xem chi tiết toàn màn hình">⛶</button>
+            <button class="corner-btn" onclick="toggleCornerTrace()" title="Thu nhỏ / Mở lại" id="btn-corner-toggle">−</button>
+          </div>
+        </div>
+        <div class="corner-trace-stream" id="trace-col-stream"></div>
+      </div>
+    </section>
+
+
+
+    <!-- Right Section: NITRO Cyber ReAct AI Assistant -->
+    <aside class="ai-drawer" id="ai-drawer">
+      <div class="ai-drawer-header">
+        <div class="ai-brand">
+          <div class="ai-avatar">🤖</div>
+          <div>
+            <h2 class="ai-name">NITRO RE-ACT AGENT</h2>
+            <p class="ai-model-tag">Model Context Protocol (MCP) Live</p>
+          </div>
+        </div>
+        <button class="drawer-close-btn" onclick="toggleAIChat()">✕</button>
+      </div>
+
+      <!-- Customer ID Banner in AI Chat Drawer -->
+      <div class="user-drawer-card">
+        <span class="card-icon">💳</span>
+        <div class="card-info">
+          <span class="card-title">MÃ ID TÀI KHOẢN CỦA BẠN:</span>
+          <span class="card-id-code">NET2026 <small class="tier-tag">Diamond VIP</small></span>
+        </div>
+      </div>
+
+      <!-- Chat Messages Container -->
+      <div class="chat-messages" id="chat-messages">
+        <div class="msg msg-ai">
+          <div class="msg-content">
+            Chào mừng bạn đến với <strong>Cyber Gaming Hub</strong>! 👋<br><br>
+            Mình là Trợ lý Tác tử <strong>NITRO Cyber ReAct Agent</strong>. Mình có thể giúp bạn:
+            <ul>
+              <li>🔍 <strong>Tra cứu máy trống</strong> (VIP, Pro Gaming, Standard, Stream).</li>
+              <li>👥 <strong>Đặt nhiều máy cùng lúc</strong> cho bạn bè hoặc cả team.</li>
+              <li>🔄 <strong>Đổi máy / Hủy đặt</strong> (tính khấu trừ 30p & hoàn cọc).</li>
+              <li>🍜 <strong>Tra cứu & Gọi đồ ăn Canteen</strong> (mì tôm trứng xúc xích, cơm chiên, Sting dâu... gọi qua MCP Tool).</li>
+            </ul>
+            Bạn cần tra máy hay gọi bát mì cứ nhắn mình nhé!
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Prompt Chips -->
+      <div class="prompt-chips">
+        <button class="chip" onclick="sendQuickPrompt('Hiện tại khu VIP còn máy nào trống không, cấu hình và giá bao nhiêu?')">🎮 Khu VIP còn máy?</button>
+        <button class="chip" onclick="sendQuickPrompt('Đặt giúp tôi 2 máy VIP-02 và VIP-05 cho tài khoản NET2026 chơi 3 tiếng')">👥 Đặt 2 máy cùng lúc</button>
+        <button class="chip" onclick="sendQuickPrompt('Cho tôi 1 bát mì tôm trứng xúc xích và 1 Sting dâu mang tới máy VIP-08 cho ID NET2026')">🍜 Gọi 1 bát mì tôm trứng</button>
+        <button class="chip" onclick="sendQuickPrompt('Tôi muốn hủy đặt máy VIP-08 để đổi sang máy khác')">🔄 Đổi / Hủy máy</button>
+      </div>
+
+      <!-- Chat Input Form -->
+      <form class="chat-input-bar" id="chat-form" onsubmit="handleChatSubmit(event)">
+        <input type="text" id="chat-input" placeholder="Hỏi agent: 'Đặt 2 máy VIP-02 và VIP-05', 'Quán có mì tôm không?'..." autocomplete="off">
+        <button type="submit" id="btn-send-chat">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </form>
+    </aside>
+  </main>
+
+  <!-- Modal Booking Confirmation (Multi-seat support) -->
+  <div class="modal-backdrop" id="booking-modal">
+    <div class="cyber-modal">
+      <button class="modal-close-btn" onclick="closeBookingModal()">✕</button>
+      <div class="modal-badge">CYBER CAFE BOOKING</div>
+      <h3 class="modal-title" id="modal-booking-title">ĐẶT MÁY ĐÃ CHỌN</h3>
+      <div class="modal-pc-list" id="modal-pc-list"></div>
+
+      <div class="modal-form">
+        <div class="form-group">
+          <label>Mã tài khoản hội viên:</label>
+          <input type="text" id="input-customer-id" value="NET2026" placeholder="Nhập mã hội viên">
+          <span class="input-hint">ID tài khoản hội viên: <strong style="color: var(--neon-cyan)">NET2026 (Diamond VIP)</strong></span>
+        </div>
+
+        <div class="form-group">
+          <label>Thời lượng chơi:</label>
+          <div class="duration-selector">
+            <button type="button" class="dur-btn" onclick="selectDuration(1)">1 giờ</button>
+            <button type="button" class="dur-btn active" onclick="selectDuration(2)">2 giờ</button>
+            <button type="button" class="dur-btn" onclick="selectDuration(3)">3 giờ</button>
+            <button type="button" class="dur-btn" onclick="selectDuration(5)">5 giờ</button>
+          </div>
+        </div>
+
+        <div class="cost-breakdown">
+          <div class="cost-row">
+            <span>Số lượng máy đặt:</span>
+            <span id="modal-count-display">1 máy</span>
+          </div>
+          <div class="cost-row">
+            <span>Thời lượng mỗi máy:</span>
+            <span id="modal-duration-display">2 giờ</span>
+          </div>
+          <div class="cost-divider"></div>
+          <div class="cost-row total-row">
+            <span>Tổng chi phí dự tính:</span>
+            <span class="total-price" id="modal-total-cost">36.000 VNĐ</span>
+          </div>
+        </div>
+
+        <button type="button" class="btn-submit-booking" id="btn-submit-booking" onclick="submitBooking()">
+          XÁC NHẬN KHÓA MÁY VÀ ĐẶT CHỖ
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal View/Cancel Booked Seat (Đổi máy hoặc Hủy đặt) -->
+  <div class="modal-backdrop" id="manage-booked-modal">
+    <div class="cyber-modal">
+      <button class="modal-close-btn" onclick="closeManageModal()">✕</button>
+      <div class="modal-badge">QUẢN LÝ MÁY ĐÃ GIỮ</div>
+      <h3 class="modal-title" id="manage-pc-title">MÁY VIP-08</h3>
+      <p class="modal-subtitle" id="manage-pc-specs"></p>
+
+      <div class="manage-content">
+        <div class="alert-box-info">
+          Bạn đang giữ máy này. Bạn có thể giữ nguyên hoặc <strong>Hủy đặt để đổi sang máy khác</strong> trên sơ đồ.
+        </div>
+        <div class="modal-action-buttons">
+          <button type="button" class="btn-cancel-pc" onclick="cancelBookedSeat()">
+            🗑️ HỦY ĐẶT MÁY NÀY (ĐỔI MÁY KHÁC)
+          </button>
+          <button type="button" class="btn-secondary" onclick="closeManageModal()">
+            GIỮ NGUYÊN
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lightbox Image Modal for Small Arena Preview -->
+  <div class="modal-backdrop" id="image-modal" onclick="closeImageModal()">
+    <div class="image-modal-content" onclick="event.stopPropagation()">
+      <button class="modal-close-btn" onclick="closeImageModal()">✕</button>
+      <img src="assets/cyber_arena_3d.jpg" alt="Không gian Cyber Arena phóng to" class="full-arena-img">
+      <div class="image-modal-caption">Hình ảnh không gian Cyber Gaming Arena (Alienware VIP & ZOWIE 360Hz Stage)</div>
+    </div>
+  </div>
+
+  <!-- Modal Presentation Bảng Trắng 5 Bước Demo -->
+  <div class="modal-backdrop" id="demo-modal">
+    <div class="cyber-modal demo-large-modal">
+      <button class="modal-close-btn" onclick="closeDemoModal()">✕</button>
+      <div class="modal-badge">NỘI DUNG DEMO THUYẾT TRÌNH (5 BƯỚC BẢNG TRẮNG)</div>
+      <h3 class="modal-title">BÁO CÁO NGHIỆM THU LAB 03 - REACT AGENT SYSTEM DEMO</h3>
+      
+      <div class="demo-slides-container">
+        <!-- Bước 1 -->
+        <div class="demo-slide">
+          <h4 class="slide-heading">1. Chọn đề tài gì? Tại sao chọn đề tài đó?</h4>
+          <p><strong>Tên đề tài:</strong> Trợ lý Đặt Máy Quán Net & Cyber Gaming Hub (Cyber Cafe Booking Agent).</p>
+          <ul>
+            <li><strong>Tính thực tế:</strong> Phòng máy Cyber Game quy mô lớn (32 máy phân bổ 4 khu VIP, Pro Gaming, Standard, Stream) với trạng thái máy và đơn F&B biến động liên tục theo thời gian thực.</li>
+            <li><strong>Nhu cầu game thủ & eSports:</strong> Cần tra cứu nhanh máy trống theo team, máy cấu hình cực mạnh (RTX 4090, 360Hz), giữ chỗ trước và gọi đồ ăn tận máy.</li>
+            <li><strong>Khả năng tích hợp ReAct & MCP:</strong> Yêu cầu kết nối CSDL đa vùng và Canteen qua giao thức chuẩn Model Context Protocol (MCP).</li>
+          </ul>
+        </div>
+
+        <!-- Bước 2: Agentic Fit (4 Khối Chuẩn Slide Ảnh Bài Giảng) -->
+        <div class="demo-slide">
+          <h4 class="slide-heading">2. Tại sao ReAct Agent Pattern lại phù hợp? (Agentic Fit: 19/20 điểm)</h4>
+          <p>Đánh giá sự phù hợp của đề tài theo khung chuẩn 4 tiêu chí Agentic Framework:</p>
+          
+          <div class="agentic-fit-grid">
+            <!-- Khối 1: Multi-step Reasoning -->
+            <div class="fit-card">
+              <div class="fit-header-blue">1. Multi-step Reasoning</div>
+              <div class="fit-body">
+                <div class="fit-question">Bài toán có cần chia thành nhiều bước phụ thuộc nhau không?</div>
+                <div class="fit-answer">
+                  <strong>Áp dụng thực tế:</strong> Quy trình liên hoàn: Tra cứu máy trống ➔ Chọn máy theo cấu hình & giá ➔ Khóa giữ máy trên sơ đồ 2D ➔ Đặt kèm đồ ăn Canteen (mì tôm, nước ngọt) ➔ Tính tổng chi phí & xuất mã đơn hàng.
+                </div>
+              </div>
+            </div>
+
+            <!-- Khối 3: Dynamic Decision -->
+            <div class="fit-card">
+              <div class="fit-header-red">3. Dynamic Decision</div>
+              <div class="fit-body">
+                <div class="fit-question">Mỗi bước tiếp theo có phụ thuộc vào kết quả vừa quan sát không?</div>
+                <div class="fit-answer">
+                  <strong>Áp dụng thực tế:</strong> Hành động kế tiếp phụ thuộc hoàn toàn vào <code>Observation</code> từ CSDL: Nếu máy <code>AVAILABLE</code> thì mới thực thi đặt; nếu máy <code>OCCUPIED/MAINTENANCE</code> thì rẽ nhánh gợi ý máy khác; nếu hết món thì đề xuất đổi món.
+                </div>
+              </div>
+            </div>
+
+            <!-- Khối 2: Tool Interaction -->
+            <div class="fit-card">
+              <div class="fit-header-blue">2. Tool Interaction</div>
+              <div class="fit-body">
+                <div class="fit-question">Hệ thống có cần gọi search, API, database, calcu-lator, browser, file system...?</div>
+                <div class="fit-answer">
+                  <strong>Áp dụng thực tế:</strong> Agent bắt buộc gọi <strong>5 Tools MCP</strong> tương tác trực tiếp với CSDL Phòng máy và CSDL Canteen, tính toán tiền theo giờ và cấn trừ cọc thực tế. Không thể trả lời chay (Anti-Hallucination).
+                </div>
+              </div>
+            </div>
+
+            <!-- Khối 4: Long Horizon -->
+            <div class="fit-card">
+              <div class="fit-header-red">4. Long Horizon</div>
+              <div class="fit-body">
+                <div class="fit-question">Hệ thống có phải giữ mục tiêu xuyên suốt qua nhiều vòng lặp hoặc nhiều state không?</div>
+                <div class="fit-answer">
+                  <strong>Áp dụng thực tế:</strong> Duy trì phiên làm việc đa trạng thái: Nhận yêu cầu ➔ Khóa máy tạm thời ➔ Đổi sang máy khu vực khác ➔ Khấu trừ phí giữ máy 30 phút ➔ Hướng dẫn hội viên gặp Thu ngân tại Quầy Lễ Tân hoàn lại tiền thừa.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bảng Chi Tiết Cơ Sở Chấm Điểm Agentic Fit (Scoring Matrix 19/20) -->
+          <h5 style="color: var(--neon-cyan); margin: 18px 0 8px 0; font-family: var(--font-display); font-size: 0.85rem;">
+            📋 BẢNG CƠ SỞ CHẤM ĐIỂM & ĐÁNH GIÁ AGENTIC FIT SCORING MATRIX (19/20 ĐIỂM)
+          </h5>
+          <table class="demo-table" style="font-size: 0.78rem;">
+            <thead>
+              <tr>
+                <th style="width: 25%;">Tiêu chí Đánh giá (Khung Slide)</th>
+                <th style="width: 14%; text-align: center;">Điểm số</th>
+                <th>Cơ sở Lý luận & Bằng chứng Kỹ thuật Thực tế</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>1. Multi-step Reasoning</strong><br><small style="color: #94a3b8;">Có cần chia thành nhiều bước phụ thuộc nhau?</small></td>
+                <td style="text-align: center; color: var(--neon-cyan); font-weight: 800; font-size: 0.95rem;">5 / 5</td>
+                <td>Quy trình nghiệp vụ là chuỗi liên hoàn có quan hệ nhân quả: Tra cứu máy trống ➔ Chọn máy theo cấu hình & giá ➔ Khóa giữ máy trên CSDL ➔ Đặt thêm F&B Canteen ➔ Tính tổng chi phí & xuất mã đơn hàng. Mỗi bước sau nhận dữ liệu đầu vào từ bước trước. Tác tử không thể xử lý trong 1 bước duy nhất.</td>
+              </tr>
+              <tr>
+                <td><strong>2. Tool Interaction</strong><br><small style="color: #94a3b8;">Có cần gọi API, Database, Tool bên ngoài?</small></td>
+                <td style="text-align: center; color: var(--neon-cyan); font-weight: 800; font-size: 0.95rem;">5 / 5</td>
+                <td>Bắt buộc kết nối <strong>5 MCP Tools</strong> vào CSDL 32 máy và CSDL Canteen. Trạng thái phòng máy biến động từng giây nên LLM tuyệt đối không thể trả lời chay (chống Hallucination 100%). Bắt buộc dùng Tools để đọc/ghi CSDL và tính toán tiền theo giờ (Calculator).</td>
+              </tr>
+              <tr>
+                <td><strong>3. Dynamic Decision</strong><br><small style="color: #94a3b8;">Bước tiếp theo có phụ thuộc kết quả vừa quan sát?</small></td>
+                <td style="text-align: center; color: var(--neon-cyan); font-weight: 800; font-size: 0.95rem;">5 / 5</td>
+                <td>Mọi quyết định tiếp theo rẽ nhánh 100% theo <code>Observation</code>: Nếu máy <code>AVAILABLE</code> thì thực thi đặt; nếu máy <code>OCCUPIED</code> hoặc <code>MAINTENANCE</code> thì tự động rẽ nhánh tư vấn máy khác cùng khu; khi hủy máy thì tính khấu trừ cọc 30p theo trạng thái thực tế.</td>
+              </tr>
+              <tr>
+                <td><strong>4. Long Horizon</strong><br><small style="color: #94a3b8;">Có phải giữ mục tiêu qua nhiều vòng lặp/state?</small></td>
+                <td style="text-align: center; color: var(--neon-orange); font-weight: 800; font-size: 0.95rem;">4 / 5</td>
+                <td>
+                  <strong>Đạt 4 điểm:</strong> Duy trì mục tiêu qua nhiều vòng hội thoại (Multi-turn): Nhớ ID <code>NET2026</code>, nhớ vị trí máy đang ngồi để giao đồ ăn, duy trì phiên đổi máy và tạo mã hoàn tiền.<br>
+                  <strong style="color: #f87171;">Lý do trừ 1 điểm (đạt 4/5):</strong> Phiên làm việc diễn ra theo ca chơi (Session-based, kéo dài vài chục phút đến vài tiếng), không phải tác tử tự hành dài hạn nhiều tuần/tháng như AutoGPT hay AI nghiên cứu khoa học. Chấm 4/5 đảm bảo tính khách quan và khoa học.
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr style="background: rgba(0, 240, 255, 0.12); font-weight: 800;">
+                <td style="color: var(--neon-cyan);">TỔNG ĐIỂM AGENTIC FIT</td>
+                <td style="text-align: center; color: var(--neon-cyan); font-size: 1.05rem;">19 / 20</td>
+                <td style="color: #fff;">
+                  <strong>KẾT LUẬN QUY CHUẨN:</strong> Đạt 19/20 điểm (vượt xa ngưỡng tiêu chuẩn <strong>&gt; 12/20</strong>). Khẳng định đề tài Đặt Máy Cyber Game thuộc mức độ <strong>High Agentic Fit</strong>, bắt buộc phải sử dụng kiến trúc <strong>ReAct Agent</strong> thay vì Chatbot đơn thuần.
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+
+        <!-- Bước 3: Sơ Đồ Kiến Trúc 5 Khối (Reasoning, Perception, Action, Memory) -->
+        <div class="demo-slide">
+          <h4 class="slide-heading">3. Kiến trúc Agent đã xây dựng (Reasoning, Perception, Action & Memory)</h4>
+          <p>Mô hình kiến trúc tổng thể của Agentic AI với cơ chế State và Memory giúp tác tử không bao giờ bị "mất mạch":</p>
+
+          <div class="agent-arch-wrapper">
+            <div class="arch-input-label">Input từ môi trường</div>
+            <div class="arch-diagram-grid">
+              <!-- Top-Left: Perception -->
+              <div class="arch-node node-perception">
+                <div class="arch-node-title">Perception</div>
+                <ul class="arch-node-bullets">
+                  <li>• User input (Tin nhắn hội viên, lệnh đặt máy/order)</li>
+                  <li>• Tool results (Observation từ MCP Server)</li>
+                </ul>
+              </div>
+
+              <!-- Center: Reasoning Core -->
+              <div class="arch-node node-reasoning">
+                <div class="arch-node-title">Reasoning</div>
+                <div class="arch-node-sub">LLM Core</div>
+                <small style="color: #93c5fd; display: block; margin-top: 4px; font-size: 0.7rem;">(Qwen 3.8 / ReAct Loop Engine)</small>
+              </div>
+
+              <!-- Top-Right: Action -->
+              <div class="arch-node node-action">
+                <div class="arch-node-title">Action</div>
+                <ul class="arch-node-bullets">
+                  <li>• API / MCP Tools Execution</li>
+                  <li>• Final answer (Phản hồi tổng hợp tới người dùng)</li>
+                </ul>
+              </div>
+
+              <!-- Bottom-Left: Short-term Memory -->
+              <div class="arch-node node-short-memory">
+                <div class="arch-node-title">Short-term Memory</div>
+                <ul class="arch-node-bullets">
+                  <li>• Context window (Multi-turn session history)</li>
+                  <li>• Bộ nhớ trạng thái phiên làm việc hiện tại</li>
+                </ul>
+              </div>
+
+              <!-- Bottom-Right: Long-term Memory -->
+              <div class="arch-node node-long-memory">
+                <div class="arch-node-title">Long-term Memory</div>
+                <ul class="arch-node-bullets">
+                  <li>• Store / Database (32 Máy phòng net)</li>
+                  <li>• CSDL Hội viên & Thực đơn Canteen F&B</li>
+                </ul>
+              </div>
+            </div>
+            <div class="arch-caption-footer">State và memory giúp agent không "mất mạch"</div>
+          </div>
+        </div>
+
+        <!-- Bước 4: Danh Sách Tool MCP & Bảng Quy Trình Reasoning & Tool Use -->
+        <div class="demo-slide">
+          <h4 class="slide-heading">4. Sử dụng những Tool gì? Tác dụng từng Tool & Bảng Quy Trình Suy Luận</h4>
+          <p>Hệ thống được trang bị <strong>5 Công cụ MCP</strong> kết nối trực tiếp với tầng CSDL nghiệp vụ:</p>
+          
+          <table class="demo-table">
+            <thead>
+              <tr>
+                <th style="width: 22%;">Tên Tool (MCP Call)</th>
+                <th style="width: 28%;">Tham Số (Parameters)</th>
+                <th>Tác Dụng Nghiệp Vụ & Dữ Liệu Tương Tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>check_available_pcs</code></td>
+                <td><code>zone: "VIP"|"STANDARD"|"PRO_GAMING"|"STREAM"|"ALL"</code></td>
+                <td>Tra cứu danh sách máy đang trống thời gian thực, bảng giá từng khu và cấu hình chi tiết (CPU, GPU RTX 4090/4070Ti, Màn hình 360Hz/240Hz).</td>
+              </tr>
+              <tr>
+                <td><code>book_gaming_pc</code></td>
+                <td><code>customer_id, pc_id, duration_hours</code></td>
+                <td>Khóa giữ chỗ 1 hoặc nhiều máy (Multi-seat booking) trên sơ đồ 2D cho hội viên, chuyển trạng thái sang <code>BOOKED</code> và xuất mã booking.</td>
+              </tr>
+              <tr>
+                <td><code>cancel_or_release_pc</code></td>
+                <td><code>customer_id, pc_id, held_minutes</code></td>
+                <td>Hủy đặt máy hoặc đổi máy, tự động tính khấu trừ phí cọc 30 phút giữ máy và hướng dẫn khách gặp Thu ngân nhận tiền hoàn tại Quầy Lễ Tân.</td>
+              </tr>
+              <tr>
+                <td><code>get_canteen_menu</code></td>
+                <td><code>category: "FOOD"|"DRINK"|"SNACK"|"ALL"</code></td>
+                <td>Tra cứu thực đơn đồ ăn đêm, mì tôm trứng xúc xích, cơm chiên, nước uống tăng lực, giá bán và trạng thái còn hàng từ CSDL Canteen.</td>
+              </tr>
+              <tr>
+                <td><code>order_canteen_item</code></td>
+                <td><code>customer_id, item_name, pc_id, quantity</code></td>
+                <td>Đặt món ăn / nước uống phục vụ trực tiếp tận máy cho game thủ, xuất mã phiếu <code>ORDER-2026-X</code> và tính tiền chính xác.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h5 style="color: var(--neon-cyan); margin: 16px 0 8px 0; font-family: var(--font-display); font-size: 0.85rem;">
+            📊 BẢNG MA TRẬN SUY LUẬN & SỬ DỤNG TOOL (REASONING & TOOL-USE MATRIX)
+          </h5>
+          <table class="reasoning-tool-table">
+            <thead>
+              <tr>
+                <th style="width: 20%;">Ý Định Khách Hàng (Perception)</th>
+                <th style="width: 25%;">Chuỗi Suy Luận (Reasoning / Thought)</th>
+                <th style="width: 22%;">Công Cụ Gọi (Action / Tool Use)</th>
+                <th style="width: 20%;">Quan Sát (Observation từ DB)</th>
+                <th style="width: 13%;">Kết Quả (Final Response)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><em>"Khu VIP còn máy nào trống không?"</em></td>
+                <td class="thought-snippet">Khách hỏi danh sách máy khu VIP. Cần gọi tool để đọc trạng thái thời gian thực từ CSDL.</td>
+                <td><span class="tool-tag-pill">check_available_pcs</span><br><small>args: {"zone": "VIP"}</small></td>
+                <td><code>{"total_available": 3, "pcs": ["VIP-02", "VIP-05", "VIP-08"]}</code></td>
+                <td>Báo 3 máy VIP trống kèm cấu hình i7-14700K & giá 18k/h.</td>
+              </tr>
+              <tr>
+                <td><em>"Đặt cho tôi máy VIP-02 chơi 3 tiếng"</em></td>
+                <td class="thought-snippet">Yêu cầu khóa máy cụ thể cho hội viên NET2026 trong 3 giờ. Kích hoạt tool đặt máy.</td>
+                <td><span class="tool-tag-pill">book_gaming_pc</span><br><small>args: {"pc_id": "VIP-02", "duration_hours": 3}</small></td>
+                <td><code>{"status": "SUCCESS", "booking_code": "BK-2026-VIP02", "total_cost": 54000}</code></td>
+                <td>Xác nhận giữ máy VIP-02 thành công, cập nhật sơ đồ 2D.</td>
+              </tr>
+              <tr>
+                <td><em>"Cho tôi 1 bát mì tôm trứng xúc xích ra máy VIP-02"</em></td>
+                <td class="thought-snippet">Khách gọi món ăn đêm giao tận máy. Bắt buộc gọi Canteen Tool thay vì trả lời chay.</td>
+                <td><span class="tool-tag-pill">order_canteen_item</span><br><small>args: {"item_name": "Mì tôm", "pc_id": "VIP-02"}</small></td>
+                <td><code>{"status": "SUCCESS", "order_id": "ORDER-2026-1", "total_cost": 25000}</code></td>
+                <td>Báo đơn đã nhận, nhân viên Canteen mang ra tận máy.</td>
+              </tr>
+              <tr>
+                <td><em>"Tôi muốn đổi từ VIP-02 sang PRO-01"</em></td>
+                <td class="thought-snippet">Quy trình đa bước: Hủy giữ máy cũ, tính khấu trừ phí cọc và cấn trừ sang máy mới.</td>
+                <td><span class="tool-tag-pill">cancel_or_release_pc</span><br><small>args: {"pc_id": "VIP-02"}</small></td>
+                <td><code>{"status": "SUCCESS", "refund_amount": 45000, "held_fee": 9000}</code></td>
+                <td>Báo tiền hoàn lại và hướng dẫn ra Quầy Lễ Tân nhận tiền.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Bước 5 -->
+        <div class="demo-slide">
+          <h4 class="slide-heading">5. Demo trực tiếp & Waterfall Trace Log từng bước</h4>
+          <p>Bấm nút <strong>"NITRO AI AGENT"</strong> ở góc trên bên phải để chat trực tiếp và xem <strong>A.I Execution Stream Logs</strong> diễn ra theo thời gian thực tại ô góc dưới màn hình!</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Modal ReAct Trace Logs Inspector & Tool Execution Dashboard -->
+  <div class="modal-backdrop" id="trace-modal">
+    <div class="cyber-modal demo-large-modal trace-inspector-modal">
+      <button class="modal-close-btn" onclick="closeTraceModal()">✕</button>
+      <div class="modal-badge">OBSERVABILITY & TOOL CALL INSPECTOR</div>
+      <h3 class="modal-title">NHẬT KÝ THỰC THI TOOLS & CHUỖI SUY LUẬN REACT</h3>
+      <p class="modal-subtitle">Soát vết chi tiết: Ai gọi tool gì? Đã truyền tham số gì? Lý do suy luận (Thought) lựa chọn Tool.</p>
+
+      <div class="trace-tabs">
+        <button class="trace-tab-btn active" id="tab-stream-trace" onclick="switchTraceTab('stream')">🐛 Live Stream Debug Console</button>
+        <button class="trace-tab-btn" id="tab-live-trace" onclick="switchTraceTab('live')">⚡ ReAct Steps Inspector</button>
+        <button class="trace-tab-btn" id="tab-waterfall-trace" onclick="switchTraceTab('waterfall')">📊 Waterfall JSON Suite</button>
+      </div>
+
+      <div class="trace-log-view-container" id="trace-log-view-container">
+        <div class="trace-empty-state">Chưa có lượt soát vết nào. Hãy nhắn tin cho AI Agent để ghi nhận Trace Log!</div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

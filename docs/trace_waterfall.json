@@ -1,29 +1,205 @@
 [
   {
     "step": 1,
-    "query": "Chào bạn, bạn có thể giới thiệu quy chế học vụ cơ bản của Đại học VinUni không?",
+    "query": "Chào bạn, quán net mở cửa từ mấy giờ đến mấy giờ và có dịch vụ đồ ăn đêm không?",
     "action_type": "FINAL_ANSWER",
-    "thought": "Câu hỏi chung về quy chế học vụ, trả lời trực tiếp không cần gọi Tool.",
-    "output": "[Mock Agent Response]: Xin chào! Quy chế học vụ VinUni yêu cầu sinh viên tích lũy tối thiểu 120 tín chỉ và duy trì GPA trên 2.0 để tốt nghiệp.",
-    "latency_ms": 2845.93
+    "thought": "OpenAI phản hồi trực tiếp bằng văn bản (không cần gọi công cụ).",
+    "output": "Chào bạn nhé! 🎮\n\nQuán mình **mở cửa 24/7 xuyên đêm**, nên bạn cứ chiến game thoải mái từ sáng tới khuya hoặc qua đêm luôn được. Quán cũng có **bãi giữ xe và bảo vệ an toàn** cho bạn yên tâm ngồi game.\n\nVề **dịch vụ đồ ăn đêm**: quán có phục vụ tại canteen đầy đủ, hot và tiện cho game thủ “chạy đêm” luôn ạ:\n\n- 🍜 **Mì tôm trứng xúc xích** — 25.000đ  \n- 🥩 **Mì xào bò rau cải** — 35.000đ  \n- 🍛 **Cơm chiên dưa bò** — 40.000đ  \n- 🥖 **Bánh mì pate** — 20.000đ  \n- 🥤 **Nước Sting / RedBull / Trà đào** — từ 15.000đ – 30.000đ  \n\nBạn cần mình kiểm tra máy trống hoặc đặt trước máy chơi game nữa không? 😎",
+    "latency_ms": 11848.55
   },
   {
     "step": 1,
-    "query": "Hãy tra cứu thông tin học vụ của sinh viên SV2026001.",
+    "query": "Hiện tại khu VIP còn máy nào đang trống không, cấu hình và giá một giờ chơi là bao nhiêu?",
     "action_type": "TOOL_EXECUTION",
-    "tool_name": "academic_query",
+    "tool_name": "check_available_pcs",
     "arguments": {
-      "student_id": "SV2026001"
+      "zone": "VIP"
     },
-    "observation": {},
-    "latency_ms": 799.12
+    "observation": {
+      "status": "SUCCESS",
+      "zone_filter": "VIP",
+      "total_available": 3,
+      "pcs": {
+        "VIP-02": {
+          "zone": "VIP",
+          "specs": "Intel Core i7-14700K | RTX 4070 Ti Super | Màn 2K 240Hz Fast-IPS",
+          "status": "AVAILABLE",
+          "price_per_hour": 18000
+        },
+        "VIP-05": {
+          "zone": "VIP",
+          "specs": "Intel Core i7-14700K | RTX 4070 Ti Super | Màn 2K 240Hz Fast-IPS",
+          "status": "AVAILABLE",
+          "price_per_hour": 18000
+        },
+        "VIP-08": {
+          "zone": "VIP",
+          "specs": "Intel Core i7-14700K | RTX 4070 Ti Super | Màn 2K 240Hz Fast-IPS",
+          "status": "AVAILABLE",
+          "price_per_hour": 18000
+        }
+      },
+      "message": "Tìm thấy 3 máy trống phù hợp ở khu vực VIP."
+    },
+    "latency_ms": 3091.74
   },
   {
     "step": 2,
-    "query": "Hãy tra cứu thông tin học vụ của sinh viên SV2026001.",
+    "query": "Hiện tại khu VIP còn máy nào đang trống không, cấu hình và giá một giờ chơi là bao nhiêu?",
     "action_type": "FINAL_ANSWER",
-    "thought": "Tổng hợp kết quả từ MCP Server thành công.",
-    "output": "Chưa thể trả lời chi tiết do chưa nhận được dữ liệu từ MCP Server (hãy hoàn thành TODO 2.1).",
-    "latency_ms": 10.0
+    "thought": "OpenAI phản hồi trực tiếp bằng văn bản (không cần gọi công cụ).",
+    "output": "Hiện tại khu **VIP còn 3 máy đang trống** bạn nhé:\n\n- **VIP-02**\n- **VIP-05**\n- **VIP-08**\n\n**Cấu hình chung:**\n- CPU: **Intel Core i7-14700K**\n- VGA: **RTX 4070 Ti Super**\n- Màn hình: **2K 240Hz Fast-IPS**\n\n**Giá chơi:** **18.000đ/giờ** mỗi máy.\n\nNếu bạn muốn, mình có thể kiểm tra thêm tình trạng các khu vực khác như **STANDARD, PRO_GAMING, STREAM**, hoặc hỗ trợ giữ máy VIP cho bạn luôn nhé!",
+    "latency_ms": 6058.18
+  },
+  {
+    "step": 1,
+    "query": "Đặt giúp tôi máy VIP-08 cho tài khoản hội viên NET2026 chơi trong 3 giờ.",
+    "action_type": "TOOL_EXECUTION",
+    "tool_name": "book_gaming_pc",
+    "arguments": {
+      "customer_id": "NET2026",
+      "pc_id": "VIP-08",
+      "duration_hours": 3
+    },
+    "observation": {
+      "status": "SUCCESS",
+      "booking_id": "CYBER-VIP-08-2026",
+      "customer_id": "NET2026",
+      "customer_name": "Lê Như Ý",
+      "pc_id": "VIP-08",
+      "zone": "VIP",
+      "duration_hours": 3,
+      "price_per_hour": 18000,
+      "total_cost": 54000,
+      "specs": "Intel Core i7-14700K | RTX 4070 Ti Super | Màn 2K 240Hz Fast-IPS",
+      "message": "Đặt máy thành công! Mã đặt: CYBER-VIP-08-2026. Máy VIP-08 (VIP) đã được giữ cho Lê Như Ý trong 3 giờ. Tổng phí tạm tính: 54,000 VNĐ."
+    },
+    "latency_ms": 4443.18
+  },
+  {
+    "step": 2,
+    "query": "Đặt giúp tôi máy VIP-08 cho tài khoản hội viên NET2026 chơi trong 3 giờ.",
+    "action_type": "FINAL_ANSWER",
+    "thought": "OpenAI phản hồi trực tiếp bằng văn bản (không cần gọi công cụ).",
+    "output": "Đặt máy thành công rồi bạn nhé! 🎮🔥\n\n- **Mã đặt phòng:** `CYBER-VIP-08-2026`\n- **Tài khoản hội viên:** `NET2026` — **Lê Như Ý**\n- **Máy:** `VIP-08` thuộc khu **VIP**\n- **Thời lượng đặt:** **3 giờ**\n- **Giá:** **18.000đ/giờ**\n- **Tổng phí tạm tính:** **54.000đ**\n- **Cấu hình máy:** **Intel Core i7-14700K | RTX 4070 Ti Super | Màn 2K 240Hz Fast-IPS**\n\nMáy VIP-08 đã được giữ cho bạn rồi đó! Khi nào đến cứ ra lễ tân báo mã đặt là nhận máy chiến game thôi nhé 😎✨",
+    "latency_ms": 7303.0
+  },
+  {
+    "step": 1,
+    "query": "Kiểm tra xem khu PRO_GAMING còn máy nào trống không, nếu còn máy PRO-01 thì đặt luôn máy đó 2 tiếng cho tài khoản NET2026.",
+    "action_type": "TOOL_EXECUTION",
+    "tool_name": "check_available_pcs",
+    "arguments": {
+      "zone": "PRO_GAMING"
+    },
+    "observation": {
+      "status": "SUCCESS",
+      "zone_filter": "PRO_GAMING",
+      "total_available": 2,
+      "pcs": {
+        "PRO-01": {
+          "zone": "PRO_GAMING",
+          "specs": "Intel Core i9-14900KS | RTX 4090 24GB | Màn BenQ ZOWIE XL2566K 360Hz | Ghế gaming Herman Miller",
+          "status": "AVAILABLE",
+          "price_per_hour": 25000
+        },
+        "PRO-04": {
+          "zone": "PRO_GAMING",
+          "specs": "Intel Core i9-14900KS | RTX 4090 24GB | Màn BenQ ZOWIE XL2566K 360Hz | Ghế gaming Herman Miller",
+          "status": "AVAILABLE",
+          "price_per_hour": 25000
+        }
+      },
+      "message": "Tìm thấy 2 máy trống phù hợp ở khu vực PRO_GAMING."
+    },
+    "latency_ms": 3244.07
+  },
+  {
+    "step": 2,
+    "query": "Kiểm tra xem khu PRO_GAMING còn máy nào trống không, nếu còn máy PRO-01 thì đặt luôn máy đó 2 tiếng cho tài khoản NET2026.",
+    "action_type": "TOOL_EXECUTION",
+    "tool_name": "book_gaming_pc",
+    "arguments": {
+      "customer_id": "NET2026",
+      "pc_id": "PRO-01",
+      "duration_hours": 2
+    },
+    "observation": {
+      "status": "SUCCESS",
+      "booking_id": "CYBER-PRO-01-2026",
+      "customer_id": "NET2026",
+      "customer_name": "Lê Như Ý",
+      "pc_id": "PRO-01",
+      "zone": "PRO_GAMING",
+      "duration_hours": 2,
+      "price_per_hour": 25000,
+      "total_cost": 50000,
+      "specs": "Intel Core i9-14900KS | RTX 4090 24GB | Màn BenQ ZOWIE XL2566K 360Hz | Ghế gaming Herman Miller",
+      "message": "Đặt máy thành công! Mã đặt: CYBER-PRO-01-2026. Máy PRO-01 (PRO_GAMING) đã được giữ cho Lê Như Ý trong 2 giờ. Tổng phí tạm tính: 50,000 VNĐ."
+    },
+    "latency_ms": 3990.8
+  },
+  {
+    "step": 3,
+    "query": "Kiểm tra xem khu PRO_GAMING còn máy nào trống không, nếu còn máy PRO-01 thì đặt luôn máy đó 2 tiếng cho tài khoản NET2026.",
+    "action_type": "FINAL_ANSWER",
+    "thought": "OpenAI phản hồi trực tiếp bằng văn bản (không cần gọi công cụ).",
+    "output": "Khu **PRO_GAMING** hiện đang còn **2 máy trống**:\n\n1. **PRO-01** – Cấu hình: Intel Core i9-14900KS | RTX 4090 24GB | Màn BenQ ZOWIE XL2566K 360Hz | Ghế gaming Herman Miller  \n   Giá: **25.000đ/giờ**\n\n2. **PRO-04** – Cấu hình tương tự  \n   Giá: **25.000đ/giờ**\n\nVì **PRO-01** còn trống nên mình đã đặt thành công **2 tiếng** cho tài khoản **NET2026** luôn nha.\n\n### ✅ Thông tin đặt máy\n- **Mã đặt phòng:** `CYBER-PRO-01-2026`\n- **Khách hàng:** Lê Như Ý\n- **Tài khoản:** NET2026\n- **Máy:** PRO-01 – khu PRO_GAMING\n- **Thời lượng:** 2 giờ\n- **Tổng chi phí tạm tính:** **50.000đ**\n\nBạn cứ ghé máy PRO-01 để nhận trận gaming căng cực với dàn RTX 4090 + màn 360Hz nha! 🎮🔥  \nNếu đói thì quán có **mì tôm trứng xúc xích, mì xào bò, cơm chiên dưa bò, bánh mì pate, sting/red bull/trà đào** phục vụ đầy đủ luôn.",
+    "latency_ms": 9571.31
+  },
+  {
+    "step": 1,
+    "query": "Tôi muốn đặt máy số VIP-999 cho hội viên NET2026 chơi 2 tiếng.",
+    "action_type": "TOOL_EXECUTION",
+    "tool_name": "book_gaming_pc",
+    "arguments": {
+      "customer_id": "NET2026",
+      "pc_id": "VIP-999",
+      "duration_hours": 2
+    },
+    "observation": {
+      "status": "NOT_FOUND",
+      "error_code": "PC_DOES_NOT_EXIST",
+      "message": "Lỗi: Không tồn tại máy có mã 'VIP-999' trong hệ thống Cyber Game!"
+    },
+    "latency_ms": 3517.84
+  },
+  {
+    "step": 2,
+    "query": "Tôi muốn đặt máy số VIP-999 cho hội viên NET2026 chơi 2 tiếng.",
+    "action_type": "TOOL_EXECUTION",
+    "tool_name": "check_available_pcs",
+    "arguments": {
+      "zone": "VIP"
+    },
+    "observation": {
+      "status": "SUCCESS",
+      "zone_filter": "VIP",
+      "total_available": 2,
+      "pcs": {
+        "VIP-02": {
+          "zone": "VIP",
+          "specs": "Intel Core i7-14700K | RTX 4070 Ti Super | Màn 2K 240Hz Fast-IPS",
+          "status": "AVAILABLE",
+          "price_per_hour": 18000
+        },
+        "VIP-05": {
+          "zone": "VIP",
+          "specs": "Intel Core i7-14700K | RTX 4070 Ti Super | Màn 2K 240Hz Fast-IPS",
+          "status": "AVAILABLE",
+          "price_per_hour": 18000
+        }
+      },
+      "message": "Tìm thấy 2 máy trống phù hợp ở khu vực VIP."
+    },
+    "latency_ms": 12115.6
+  },
+  {
+    "step": 3,
+    "query": "Tôi muốn đặt máy số VIP-999 cho hội viên NET2026 chơi 2 tiếng.",
+    "action_type": "FINAL_ANSWER",
+    "thought": "OpenAI phản hồi trực tiếp bằng văn bản (không cần gọi công cụ).",
+    "output": "Hiện máy **VIP-999 không tồn tại trong hệ thống**, nên mình **chưa thể đặt giữ máy** cho hội viên **NET2026**.\n\nTại khu VIP hiện đang còn **2 máy trống**, cấu hình rất mạnh:\n\n| Máy | Cấu hình | Giá | Chơi 2 tiếng tạm tính |\n|---|---|---:|---:|\n| **VIP-02** | Intel Core i7-14700K | RTX 4070 Ti Super | Màn 2K 240Hz Fast-IPS | 18.000đ/giờ | 36.000đ |\n| **VIP-05** | Intel Core i7-14700K | RTX 4070 Ti Super | Màn 2K 240Hz Fast-IPS | 18.000đ/giờ | 36.000đ |\n\nBạn muốn mình đổi sang **VIP-02** hay **VIP-05** cho NET2026 trong 2 tiếng không? Chỉ cần xác nhận máy, mình sẽ đặt giữ ngay.",
+    "latency_ms": 37774.19
   }
 ]
