@@ -5,38 +5,139 @@
 | TrÆ°á»ng | GiÃ¡ trá»‹ |
 | :-- | :-- |
 | ID | 01 |
-| ThÆ° má»¥c báº¥t biáº¿n | planning/01_2026-09-15_cyber-ops-v2 |
+| ThÆ° má»¥c báº¥t biáº¿n | `planning/01_2026-09-15_cyber-ops-v2` |
 | Tráº¡ng thÃ¡i | ðŸ“ SPEC ÄÃƒ DUYá»†T â€” sáºµn sÃ ng thi cÃ´ng WP01 |
 | Loáº¡i phÃ¡t hÃ nh dá»± kiáº¿n | MINOR |
 | PhiÃªn báº£n hiá»‡n táº¡i | 1.0.0 |
 | PhiÃªn báº£n má»¥c tiÃªu | 1.1.0 |
 | NgÃ y táº¡o | 2026-09-15 23:11:54 +07:00 |
-| Base SHA | eb1022a4f801215a691cfd0b6f5e313274618a6f |
+| Base SHA | `eb1022a4f801215a691cfd0b6f5e313274618a6f` |
 | Chá»§ trÃ¬ | Super Orchestrator |
-| Má»¥c tiÃªu má»™t cÃ¢u | Biáº¿n demo Cyber Gaming thÃ nh ná»n táº£ng váº­n hÃ nh cá»¥c bá»™ cÃ³ booking bá»n vá»¯ng, API/MCP chuáº©n hÃ³a, giao diá»‡n realtime an toÃ n vÃ  báº±ng chá»©ng kiá»ƒm thá»­ láº·p láº¡i Ä‘Æ°á»£c. |
+| Má»¥c tiÃªu | NÃ¢ng demo Cyber Gaming thÃ nh ná»n táº£ng váº­n hÃ nh local cÃ³ booking bá»n vá»¯ng, API/MCP chuáº©n hÃ³a, realtime an toÃ n vÃ  acceptance evidence láº·p láº¡i Ä‘Æ°á»£c. |
 
 ## 2. Nháº­t kÃ½ quyáº¿t Ä‘á»‹nh
 
-### 2.1. Báº£n tá»•ng há»£p Ä‘Ã£ Ä‘Æ°á»£c ngÆ°á»i dÃ¹ng duyá»‡t
+### 2.1. Pháº¡m vi Ä‘Ã£ duyá»‡t
 
-- Má»¥c tiÃªu: nÃ¢ng cáº¥p toÃ n bá»™ ná»n táº£ng theo Ä‘á» xuáº¥t Ä‘Ã£ tháº£o luáº­n, Æ°u tiÃªn Ä‘á»™ Ä‘Ãºng cá»§a booking trÆ°á»›c tÃ­nh nÄƒng trÃ¬nh diá»…n.
-- Pháº¡m vi theo gÃ³i: booking persistence; REST vÃ  MCP adapters; báº£o máº­t vÃ  realtime web; test, CI, migration, tÃ i liá»‡u vÃ  SemVer.
-- KhÃ´ng lÃ m trong há»“ sÆ¡ nÃ y: production deploy, thanh toÃ¡n tháº­t, OAuth/SSO, Ä‘a chi nhÃ¡nh, Ä‘iá»u khiá»ƒn mÃ¡y tráº¡m vÃ  quáº£n lÃ½ kho chuyÃªn sÃ¢u. LÃ½ do: cáº§n quyáº¿t Ä‘á»‹nh chiáº¿n lÆ°á»£c, tÃ i khoáº£n hoáº·c háº¡ táº§ng riÃªng.
-- Sá»‘ Ä‘o cam káº¿t: dá»¯ liá»‡u sá»‘ng qua restart; má»™t mÃ¡y chá»‰ cÃ³ má»™t booking hoáº¡t Ä‘á»™ng; input sai khÃ´ng Ä‘á»•i dá»¯ liá»‡u; MCP vÃ  REST cÅ¹ng dÃ¹ng má»™t domain service; toÃ n bá»™ test báº¯t buá»™c xanh, khÃ´ng skip.
+- Æ¯u tiÃªn Ä‘á»™ Ä‘Ãºng cá»§a booking trÆ°á»›c tÃ­nh nÄƒng trÃ¬nh diá»…n.
+- Pháº¡m vi: SQLite persistence; domain service; REST + MCP adapters; session/idempotency; realtime web; trace redaction; migration; test/CI; runbook; docs vÃ  SemVer.
+- KhÃ´ng thuá»™c Plan 01: production deploy, thanh toÃ¡n tháº­t, OAuth/SSO, Ä‘a chi nhÃ¡nh, Ä‘iá»u khiá»ƒn mÃ¡y tráº¡m, inventory chuyÃªn sÃ¢u.
+- Chá»‰ cÃ´ng bá»‘ `1.1.0` sau khi toÃ n bá»™ Exit Gate local Ä‘áº¡t.
 
 ### 2.2. Quyáº¿t Ä‘á»‹nh Ä‘ang hiá»‡u lá»±c
 
-| ID | Má»‘c giá» | Quyáº¿t Ä‘á»‹nh | CÃ¡ch Ä‘o Ä‘Ãºng/sai | Chá»— cÃ³ thá»ƒ láº­t vÃ  chi phÃ­ |
-| :-- | :-- | :-- | :-- | :-- |
-| Ä01 | 2026-09-15 23:11:54 +07:00 | Há»“ sÆ¡ lÃ  MINOR v1.1.0, giá»¯ tÆ°Æ¡ng thÃ­ch luá»“ng lab hiá»‡n táº¡i. | CLI, REST vÃ  UI cÅ© váº«n cháº¡y cÃ¡c ká»‹ch báº£n TC01â€“TC05; version Ä‘Ã­ch lÃ  1.1.0. | CÃ³ thá»ƒ tÃ¡ch thÃ nh nhiá»u PATCH; chi phÃ­ lÃ ZYÜ˜][Ûˆ°èÛÛ˜XÝ8n¨ÚH8n­Ü8n¨ZKˆŸ1$ˆŒ‹LKLMHŒÎŒLNM
-ÌÎŒÔS]H0è™ÝxnäÛˆÚ0è›ˆ0ïHÚÈpè^K8næZHšpê›‹›ÛÚÚ[™È°è1$q¨[ˆØ[Y[ŽÈ8nëÈxnáÝH[ØÚÈÚ8nâH0èHÙYYˆ™\Ý\›ØÙ\ÜÈÚ0í™È0èHxn©]›ÛÚÚ[™ÎÈ\Ý]X˜\ÙH8n¨[HÚ8n¨^H1$xnæXÈ8n«\ˆðìÈ8nàÈ^HÜÝÜ™TÔSÚH1$XHpè^HÚ8néÎÈÚH0ëH1$xnåZHš]™\‹ZYÜ˜][Ûˆ°è¸n«[ˆ0èšˆŸ1$ÈŒ‹LKLMHŒÎŒLNM
-ÌÎŒxnæ]ÛXZ[ˆÙ\šXÙH^Hš8n©]ønçÈ8nëÝHxn«]™ÚxnáÜ¸néNÈÓK‘TÕ°èPÔÚ8nâH0èY\\œËˆÚ0í™ÈY\\ˆ°èÈønëXH¸nìXÈxn¯Ü]X˜\ÙNÈÛÛ˜XÝ\ÝÚÈðî[™È[œ]ÚÈøn¯Ý]xn¨È™ÚxnáÜ¸néH1¬1¨[™È1$q¬1¨[™ËˆðìÈ8nàÈ0èXÚÙ\šXÙHÚH1 Û™È8n¨ÚNÈÚH0ëH0è›ˆ0è[ˆ˜[œØXÝ[Ûˆ°èØœÙ\˜Xš[]KˆŸ1$Œ‹LKLMHŒÎŒLNM
-ÌÎŒ][K\ÙX]›ÛÚÚ[™Èxn­ØÈ1$xnâÛš[[Ü‹[›Ý[™ÎÈ¸n¨[™È0èZHT•PSÔÕPÐÑTÔÈ¸nâÈøn©[H›Û™ÈŒKŒKŒˆxnæ]pè^HÚ0í™È8nèÜ8náÈ0èHðèˆ˜[œØXÝ[Ûˆ›Û˜XÚÎÈønäH›ÛÚÚ[™ÈxnæÚH¸n¬[™ÈˆðìÈ8nàÈxnçÈ\X[›ÛÚÚ[™È¸n¬[™ÈTH™\œÚ[ÛˆxnæÚNÈÚH0ëHV°èðèˆxnà[ˆ8nêXÈ8n¨\ˆŸ1$HŒ‹LKLMHŒÎŒLNM
-ÌÎŒ‘TÕ0î[™È˜\ÝTKÔY[XÎÈÙXˆÚxnëÈSÐÔÔËÒ”ÈxnáÛˆ8n¨ZH°èš8n«[ˆøn«\š8n«]]XHÙX”ÛØÚÙ]ˆÜ[TH˜[Y]H[œ]ÛÝ]]ÈRH1$xnåZH¸n¨[™È0èZHÚ0í™Èøn©Ûˆ™[ØYˆðìÈ8nàÈÚxnëÈÛ[™ÎÈÚH0ëH8n©\š1¬™È1 Û™È1$xnæH¸náH°è™\]Y\ÝˆŸ1$ˆŒ‹LKLMHŒÎŒLNM
-ÌÎŒPÔ0î[™È›ÝØÛÛÚxnª[ˆ¸næÚHÛÛËÛ\ÝÛÛËØØ[™\]Y\ÝQÝXÝ\™YÛÛ[°è8nåÚH0è›ˆøn¨ZNÈÚxnëÈ[X\È1¬1¨[™È0ëXÚxnæ]pê›ˆ¸n¨Û‹ˆPÔÛY[Ú[œÜXÝÜˆxnáÝðêˆ°èønãZH1$xnéÈHÛÛÈ™\ÜÛœÙHÚ8næÜØÚ[XKˆðìÈ8nàÈÚ8nâHÚxnëÈY\\ˆpí8nãÛ™ÈÚÈXŽÈÚH0ëH0èÚ0í™ÈÚ8nê[™ÈZ[š1$q¬8nèØÈ1¬1¨[™È0ëXÚPÔ8n«]ˆŸ1$ÈŒ‹LKLMHŒÎŒLNM
-ÌÎŒ]]][Ûˆøn©ÛˆY[X™\ˆÙ\ÜÚ[Ûˆ¸næZH¸næH°èY[\Ý[˜ÞHÙ^NÈ^\›˜[Ð]]Ú1¬HxnæXÈ8n¨[HšKˆÚ0èXÚÚ0èXÈÚ0í™È8néÞH›ÛÚÚ[™ÎÈønëZH8n¨ZHðî[™ÈÙ^HÚ0í™È8n¨[È¸n¨ÛˆÚH8nêHZKˆðìÈ8nàÈ¸nãÈ]]8nçÈ[[È[ÙNÈÚH0ëH0è8n¨ÚHðí8n«\°íH[ÙH°èÚ0í™È1$q¬8nèØÈš[™X›XËˆŸ1$Œ‹LKLMHŒÎŒLNM
-ÌÎŒ˜XÙHðí™ÈÚZHÚ8nâHÚ8nêXHXÝ[ÛˆÝ[[X\žKÛÛ[œ]1$pèÈÚKÝ]]][˜ÞH°èÛÜœ™[][ÛˆQÈøn©[H0è]˜]ÈÚZ[‹[Ù‹]ÝYÚˆTKÕRH˜XÙHÚ0í™ÈðìÈ±¬8nç[™ÈÝYÚ0íøn­ØÈÙXÜ™]È\Ý™YXÝ[Ûˆ[šˆðìÈ8nàÈÚxnëÈ˜XÙH8nãXÈxn«]›Û™Èš^\™H1*[šÈÚH0ëH8n©\¸n¯ÝH0èXÚÚ8nãÚH[[YKˆŸ1$HŒ‹LKLMHŒÎŒLNM
-ÌÎŒÒH°è\Ý0èønå[™È0è]0èšÈÚ0í™ÈÚ8n©\š8n«[ˆÚÚ\8nçÈXH¸n«[ˆ¸n«ÝxnæXËˆ\Ý[š]ÛÛ˜XÝ[YÜ˜][Û‹ÛÛ˜Ý\œ™[˜ÞH°èœ›ÝÜÙ\ˆÛ[ÚÙH1$xnà]H^]ÈÚÚ\HˆðìÈ8nàÈ0èXÚœ›ÝÜÙ\ˆ\ÝÚ8nãÚHŽÈÚH0ëH0è8nåÚHRH0è]xnáÛˆ]xnæ[‹ˆŸ1$LŒ‹LKLMHŒÎŒLNM
-ÌÎŒ›ÛÝ]Ú8nâH8nçÈØØ[›Û™È8näÈñ¨H°èNÈ›ÙXÝ[Û‹ÜÙ\™\ˆ0èøn¯Èøn¨XÚ1$xnæXÈ8n«\ˆxnãZH^]Ø]HønéØH8näÈñ¨HX[™Èš0èÛˆØØ[ÈÚ0í™ÈðìÈ8náÛš\ÞHøn­ØÈÙXÜ™]›ÙXÝ[Û‹ˆxnçÈ›ÙXÝ[Ûˆøn©Ûˆ]^xn¯Ý1$xnâÛš8n¨H8n©Û™È°è0èHÚøn¨ÛŽÈÚH0ëHxnæ]8näÈñ¨H¸n«[ˆ0èššpê›™ËˆŸ1$LHŒ‹LKLMHŒÎŒ
-ÌÎŒŒKŒÚ0í™ÈðìÈ\œÚ\Ý[ŽÈ[ˆHÚ0í™ÈØ[Høn¯Ý¸n¨ÛÈðèˆ]]][Ûˆ[‹[Y[[ÜžHÚ1¬HðìÈÛ˜\ÚÝˆYØXÞWÚœÛÛ˜Ú8nâH1$q¬8nèØÈ[\ÜÚH0èÛ˜\ÚÝ™ÛðèHxn¯Ûˆ°ëšðìÈ™ÝxnäÛˆønäXÈ°è\ÜÈ˜[Y][ÛŽÈœ™\Ú›ÛÝ]Ú0í™ÈÚxn¨È8n¨[È˜XÚÝ\ˆØ]H]]][ÛˆKŒKŒ™\ÝÜ™H˜XÚÝ\ñjH0è\ÝXÝ]™H°èøn©Ûˆ]^xn¯Ý1$xnâÛš™ñ¬8nçZKˆœ™\Ú›ÛÝ]0î[™È˜XÚÙYÙYYøn­ØÈÛ˜\ÚÝYØXÞH8nèÜ8náÎÈÔTUSÓ”ÈŒL‹PKÔŒL‹PˆÚ8nê[™ÈZ[ššpê›™È›Û˜XÚÈ^\Ý[™ËQˆ°èœ™\Ú[ZYÜ˜][ÛŽÈÚ0í™ÈðìÈ±¬8næØÈ8 '^Ü]™HÝ]x 'HÚxn¨Ëˆ]xnä[ˆønê]H]™H›ØÙ\ÜÈŒKŒøn©Ûˆxn¯Ýøn¯È[™Ú[ÒTÈÛ˜\ÚÝšpê›™ÎÈÚH0ëH1 Û™È¸nàHxn­Ý¸n¨ÛÈxn«]°è±¬8nèÝ8n¨[HšH[ˆKˆ‚ˆÈÈÈ‹ŒËˆ]^xn¯Ý1$xnâÛš¸nâÈ^H8n¯Â‚Ÿ]^xn¯Ý1$xnâÛšñjH^H¸n¬[™È0ïHÈŸ‹KH‹KH‹KHŸ0î[™ÈXÝ[Û˜\žHðèˆønéXÈ0èH™ÝxnäÛˆ8nëÈxnáÝH[[YKˆ1$ˆ8 %ÔS]H0è™ÝxnäÛˆÚ0è›ˆ0ïKˆXÝ[Û˜\žHxn©]8nëÈxnáÝHÚH™\Ý\°èÚ0í™È¸n¨ÛÈ¸náÈ˜[šÚ8n©\ÚKˆŸ][KX›ÛÚÚ[™ÈÚÈ0ê\0èšðí™Èxnæ]8n©Ûˆš1¬™È¸n¨ÈÕPÐÑTÔËˆ1$8 %˜[œØXÝ[Ûˆ[[Ü‹[›Ý[™Ëˆ°è[š¸n¨[™È0èZHÚ0ìÈÚxn¨ÚH0ëXÚ°èÚH0ëHðèˆxnà[ˆ™ÛðèH0ïH]xnä[‹ˆŸ8n¨Ûˆ8näÚH8nìHš8n«[ˆ0è”ÓÓ‹T”ËÓPÔ0îHÚ1¬HðìÈ™\]Y\ÝQ°èY™XÞXÛKˆ1$ˆ8 %Y\\ˆPÔ1$pî›™È›ÝØÛÛˆÛÛ˜XÝxnáÛˆ8n¨ZHÚ8nâH0èpí8nãÛ™È¸næZH¸næKˆŸ8néXÈ¸néHTH¸n¬[™È™XY[™ÒÙ\™\ˆš[™ŒŒŒ°èÓÔ”È
-‹ˆ1$Kñ$È8 %˜\ÝTKøn©]H0ëšš[™ÐÓÔ”È°èÙ\ÜÚ[Ûˆ¸næZH¸næKˆøn©Ûˆ˜[Y][Û‹8nåÚHš8n©]]pè[ˆ°è˜[šÚxnæÚH^Høn«\°íKˆŸðí™ÈÚZH±¬8nç[™ÈÝYÚ›Û™È[[YH˜XÙKˆ1$8 %XÝ[ÛˆÝ[[X\žH°è™YXÝ[Û‹ˆÚxn¨ÛH°ìˆ¸nâH8nëÈxnáÝH°è0èXÚ¸n¬[™ÈÚ8nê[™È8nãXÈxn«]Ú8nãÚH[[Y]žH¸n«[ˆ0èšˆŸ8nìH1$xnæ[™ÈÚ8né\Ù^ÜÝ]Hønä[™ÈønéØHŒKŒ¸n¬[™ÈÓHZYÜ˜][Ûˆ±¬8næØÈÚH8n«Ý›ØÙ\ÜËˆ1$LH8 %Ú8nâH[\ÜÛ˜\ÚÝYØXÞH™ÛðèHxn¯Ûˆ°ëš1$pèÈðìÈ™ÝxnäÛˆønäXÈ°è˜[Y][Û‹ˆÓH›ØÙ\ÜÈxnæÚHÚ0í™È8nàÈ1$xnãXÈ]]][Ûˆ›Û™ÈXÝ[Û˜\žHønéØH›ØÙ\ÜÈŒKŒ1$X[™ÈÚ8n¨^NÈ8nêXH8nìH1$xnæ[™È¸n¨ÛÈðèˆ0èÚ0í™ÈÚ8n¨ÈKˆ‚ˆÈÈËˆ›Ý]\ˆÔPÂ‚±$8nãXÈ[È8nêH8nìH8nêÈ°ê›ˆxnä[™Î‚‚Ÿ8nêH8nìH8náÜ8nèÜ1$xnäÛ™ÈŸ‹KNˆ‹KH‹KHŸHÜXÜËÌPTÒUPÕT‘K›YxnéXÈpêK›Û‹YÛØ[Ë¸n©]šxn¯Û‹›Ý[™\šY\È°è8nêH8nìHšxnàÛˆÚZHŸˆÜXÜËÌKPÓÓ•PÕË›YØÚ[XK\\ËTKÓPÔÛÛ˜XÝË\œ›Üˆ^Û›Û^HŸÈÜXÜËÔÔPËTKP“ÓÒÒS‘ËPÓÔ‘K›Y\œÚ\Ý[˜ÙK˜[œØXÝ[Û‹›ÛÚÚ[™ËØØ[˜Ù[ØØ[Y[ˆŸÜXÜËÔÔPËT‹PTKSPÔ›Y‘TÕ]]¸næZH¸næKY[\Ý[˜ÞH°èPÔY\\œÈŸHÜXÜËÔÔPËTËUÑP‹T‘PSSQK›YRHÝ]KÙX”ÛØÚÙ]ÓHØY™]H°è˜XÙHŸˆÜXÜËÔÔPËTTUPSUKSRQÔUSÓ‹›YZYÜ˜][Û‹\ÝÒKÛÛ\]Xš[]H°èØÜÈŸÈÜXÜËÓÔTUSÓ”Ë›Y°ëš8nìHØØ[›ÛÝ]˜XÚÝ\›Û˜XÚÈ°è[˜›ÛÚÈŸÜXÜËÕTÕS‘ËPPÐÑTSÑK›YXH¸n«[ˆ\Ý¸n¬[™ÈÚ8nê[™È°è^]Ø]\È‚ˆÈÈˆÛÜšÈXÚØYÙ\È°è0è›ˆ8n©Û™Â‚ŸÔðìÚHšxnáØÈ8n©Û™ÈÚ8n­Ûˆ¸nçÚH1«ønæØÈ1¬8nèÛ™ÈŸ‹KH‹KH‹KNˆ‹KH‹KHŸÔðèˆxnáÛˆ°è^xnáÝ¸næHÔPÈ<'å-Ú0í™ÈH™ðèHŸÔHÛXZ[ˆ[Ù[ËÔS]HØÚ[XKÙYY°èZYÜ˜][Ûˆ<'çèÔKH™ðèHŸÔˆ˜[œØXÝ[Û˜[›ÛÚÚ[™ËØ[˜Ù[°èØ[Y[ˆÙ\šXÙ\È<'çèÔHKH™ðèHŸÔÈ‘TÕTK˜[Y][Û‹Ù\ÜÚ[Ûˆ°èY[\Ý[˜ÞH<'çèÔˆKH™ðèHŸÔPÔY\\ˆÚxnª[ˆ°èÛÛ\]Xš[]H[X\È<'çèÔˆH™ðèHŸÔH™X[[YHRKÓHØY™]H°è˜XÙH™YXÝ[Ûˆ<'çèÔÈKH™ðèHŸÔˆ[š]ÛÛ˜XÝ[YÜ˜][Û‹ÛÛ˜Ý\œ™[˜ÞH°èœ›ÝÜÙ\ˆ\ÝÈ<'çèÔx $ÕÔHˆ™ðèHŸÔÈ[˜›ÛÚË0èHxnáÝH[Ù[Kœ˜Z[ˆÞ[˜È°èÙ[U™\ˆ<'çèˆÔˆH™ðèHŸÔ8nª[H1$xnâÛš1$xnäZHÚ0è[™ÈÙXÝ\š]K˜XÙH°è›Û˜XÚÈ<'å-Ô¸ $ÕÔÈH™ðèH‚±$1¬8nç[™Èñ Û™È8nìHÚxn¯ÛŽˆÔ8¡¤ˆÔH8¡¤ˆÔˆ8¡¤ˆÔÈ8¡¤ˆÔH8¡¤ˆÔˆ8¡¤ˆÔÈ8¡¤ˆÔ‚‚ˆÈÈKˆÚXÚÛ\Ý8nìXÈB‚ˆÈÈÈ8n«\øn¯Èøn¨XÚ‚‹HÞHÚ8nä]xnéXÈpêK8n¨[HšK›Û‹YÛØ[È°èønäH1$[ÈØ[Høn¯Ý‚‹HÞH8n¨[È8näÈñ¨Høn¯Èøn¨XÚ[È][˜\šX[‚‹HÞH\˜Ú]XÝ8n¨[È1$xnéÈ¸næHÔPË‚‹HÞHÝ\\ˆÜ˜Ú\Ý˜]Üˆ1$[Èøn©]H°î˜È°èÛÛ˜XÝ¸n«ÝxnæXË‚‹HÞH1$8näÛ™È¸næHœ˜Z[YÙ[ÚÈ¸n¨[™È0èZHøn¯Èøn¨XÚXÝ]™K‚‚ˆÈÈÈHðí™Â‚‹HÈHÔH8 %\œÚ\Ý[˜ÙH°èZYÜ˜][Û‹‚‹HÈHÔˆ8 %ÛXZ[ˆÙ\šXÙ\È˜[œØXÝ[Û˜[‚‹HÈHÔÈ8 %‘TÕÜÙ\ÜÚ[Û‹ÚY[\Ý[˜ÞK‚‹HÈHÔ8 %PÔ›ÝØÛÛY\\‹‚‹HÈHÔH8 %™X[[YHRH°è˜XÙH[ˆðè‹‚‹HÈHÔˆ8 %\ÝÝZ]H°èÒK‚‹HÈHÔÈ8 %ØÜËœ˜Z[ˆÞ[˜È°èÙ[U™\ˆKŒKŒ‚‹HÈHÔ8 %8nª[H1$xnâÛš1$xnäZHÚ0è[™È1$xnæXÈ8n«\‚‚ˆÈÈÈ1$0ìÛ™È8näÈñ¨B‚‹HÈHxnãZH[™Ù™ˆðìÈ™\Üðî[™È1$]píH°è]šY[˜ÙH1$q¬8nèØÈ¸nãË‚‹HÈHÚ0í™È™\Ü°èÈðì›ˆ¸n¨[™È0èZHÚ8nçHøn­ØÈpêHøn©ÝHønëXH8nçÈ0ì›™ÈÝxnäZK‚‹HÈHxnãZH^]Ø]HØØ[Ú^xnàÛˆ8§!K‚‹HÈH™ñ¬8nçZH^xnáÝÚH0è[ˆ]^xn¯ÝÝxnäZH°èÚ^xnàÛˆ¸n¨[™È0èZH8näÈñ¨H0èš8§!H1$0àÈðàˆ0à’‚‚ˆÈÈ‹ˆ^]Ø]\È[ÈpíH±¬8nç[™Â‚ŸØ]HpíH±¬8nç[™È¸n¨[™È0èZH¸n¬[™ÈÚ8nê[™È¸n«ÝxnæXÈŸ‹KH‹KH‹KNˆ‹KHŸÌØØ[8§!H¸næHÔPÈ1$xnéÈ8náÜÚ0í™ÈðìÈ8n©]Hš0è\¸n«ÝxnæXËxnãZH›Ý]\ˆ[šÈ8näÛˆ8n¨ZHŸÌHØØ[8«'ZYÜ˜][Ûˆ8n¨[È1$pî›™ÈÌˆpè^Kˆ8næZHšpê›ˆ°èpìÛˆÙYYŸÌˆØØ[8«'™\Ý\›ØÙ\ÜÈ¸nªÛˆ1$xnãXÈ1$q¬8nèØÈ›ÛÚÚ[™È1$pèÈÛÛ[Z]ŸÌÈØØ[8«'Œ™\]Y\Ý1$xnäÛ™È8nçZHðî[™Èxnæ]pè^Nˆ1$pî›™ÈHÝXØÙ\ÜËNHÛÛ™›XÝŸÌØØ[8«'][K\ÙX]ðìÈxnæ]pè^H8nåÚNˆ›Û˜XÚÈðèˆ¸næK›ÛÚÚ[™ÈxnæÚHŸÌHØØ[8«'\˜][Û‹]X[]K[ÛZ[]\È°èQØZNˆ8nåÚH0è›ˆøn¨ZK]]][ÛˆŸÌˆØØ[8«'ønëZH8n¨ZHðî[™ÈY[\Ý[˜ÞHÙ^Nˆðî[™Èøn¯Ý]xn¨ËÚ0í™È0ê›H™XÛÜ™ŸÌÈØØ[8«'‘TÕÛÛ˜XÝÓÜ[TH\ÝÈ[šÈ]]°èÝÛ™\œÚ\\ÝÈ[šŸÌØØ[8«'PÔÛY[xnáÝðê‹ÙønãZH1$xnéÈHÛÛÈÝXÝ\™YÝ]]Ú8næÜØÚ[XHŸÌHØØ[8«'RHš8n«[ˆ¸n¨[™È0èZH™X[[YNÈ^[ØYSÚ0í™È8nìXÈHØÜš\ŸÌLØØ[8«'[[YH˜XÙHÚ0í™ÈðìÈ˜]ÈÝYÚøn­ØÈÙXÜ™]ÈðìÈÛÜœ™[][ÛˆQŸÌLHØØ[8«'ðèˆ¸næH\Ý¸n«ÝxnæXÈ^]˜Z[ÚÚ\ŸÌLˆØØ[8«'˜XÚÝ\8¡¤ˆZYÜ˜]H8¡¤ˆ›Û˜XÚÈ1$q¬8nèØÈÚ8nê[™ÈZ[š¸n¬[™ÈÚXÚÜÝ[KØÛÝ[ŸÌLÈØØ[8«'ÓH°èÌx $ÕÌHÚxnëÈ0èššH1¬1¨[™È0ëXÚ1$pèÈðí™È¸näHŸÌMØØ[8«'XH¸n«[ˆ0èHxnáÝH°è™\œÚ[ÛˆKŒKŒ1$xnäÛ™È¸næH1$xn©ÞH1$xnéÈ‚ˆÈÈËˆÚ8nâHønäH]xn¨Ûˆ¸nâÈ8näÈñ¨B‚ŸÚ8nâHønäHÚpèH¸nâÈxnáÛˆ8n¨ZHŸ‹KH‹KNˆŸ]^xn¯Ý1$xnâÛš¸nâÈ^H8n¯ÈØ]HÚH8n«\HŸðèH8nãÚHxnçÈønéØHÛÜšÙ\ˆÈÔPËÚ[™Ù™ˆxn¯ÝHŸ°ì›™ÈønëXHÈ8nåÚHÚ8nëËÚønìÈ¸nã[™ÈønéØHÜ˜Ú\Ý˜]ÜˆHŸ8nåÚH<'å-8nã]]XH]Y]Üˆ8næÚH™ñ¬8nçZHŸÚH0ëHÚ8n¯ÈÜ˜Ú\Ý˜]ÜˆÚ1¬H1$[È
+| ID | Quyáº¿t Ä‘á»‹nh | CÃ¡ch Ä‘o |
+| :-- | :-- | :-- |
+| Ä01 | Plan 01 lÃ  MINOR target `1.1.0`, giá»¯ compatibility cá»§a lab. | TC01â€“TC05 tiáº¿p tá»¥c cháº¡y Ä‘Ãºng contract. |
+| Ä02 | SQLite lÃ  nguá»“n chÃ¢n lÃ½ runtime; mock chá»‰ dÃ¹ng lÃ m seed. | Booking sá»‘ng qua restart; DB test Ä‘á»™c láº­p. |
+| Ä03 | Má»™t `CyberService` sá»Ÿ há»¯u luáº­t nghiá»‡p vá»¥; CLI/REST/MCP chá»‰ lÃ  adapters. | Adapter khÃ´ng ghi SQL trá»±c tiáº¿p; cÃ¹ng input cho káº¿t quáº£ nghiá»‡p vá»¥ tÆ°Æ¡ng Ä‘Æ°Æ¡ng. |
+| Ä04 | Multi-seat booking lÃ  all-or-nothing; cáº¥m `PARTIAL_SUCCESS`. | Má»™t seat lá»—i lÃ m rollback toÃ n transaction. |
+| Ä05 | REST dÃ¹ng FastAPI/Pydantic; UI giá»¯ HTML/CSS/JS vÃ  nháº­n realtime báº±ng WebSocket. | OpenAPI validate input/output; UI nháº­n state khÃ´ng cáº§n polling 15s. |
+| Ä06 | MCP dÃ¹ng protocol chuáº©n, stdio, `tools/list`, `tools/call`, request ID vÃ  `structuredContent`; giá»¯ compatibility alias 1.1.x. | Client MCP tháº­t liá»‡t kÃª/gá»i Ä‘á»§ 5 tool. |
+| Ä07 | Mutation báº¯t buá»™c member session + idempotency key; OAuth ngoÃ i scope. | Actor khÃ¡c khÃ´ng há»§y booking; replay khÃ´ng táº¡o báº£n ghi thá»© hai. |
+| Ä08 | Runtime trace chá»‰ lÆ°u action summary/tool/redacted args/result/latency/correlation ID; cáº¥m raw chain-of-thought. | Trace audit khÃ´ng cÃ³ secret hoáº·c field reasoning/thought. |
+| Ä09 | CI/test lÃ  release gate; fail/error/skip/xfail/xpass Ä‘á»u pháº£i báº±ng 0. | `verify-junit` exit 0. |
+| Ä10 | Rollout cá»§a Plan 01 chá»‰ local. | KhÃ´ng cÃ³ production deploy/secret trong há»“ sÆ¡. |
+| Ä11 | v1.0 khÃ´ng cÃ³ persistent DB; Plan 01 khÃ´ng há»©a báº£o toÃ n mutation in-memory náº¿u khÃ´ng cÃ³ snapshot ngoÃ i tiáº¿n trÃ¬nh Ä‘Ã£ Ä‘Æ°á»£c xÃ¡c thá»±c. Fresh rollout dÃ¹ng tracked seed hoáº·c snapshot legacy há»£p lá»‡. Sau khi 1.1.0 cÃ³ mutation má»›i, restore backup cÅ© lÃ  destructive vÃ  cáº§n quyáº¿t Ä‘á»‹nh ngÆ°á»i. | OPERATIONS R12-A/R12-B chá»©ng minh riÃªng existing-DB rollback vÃ  fresh-migration recovery; khÃ´ng cÃ³ bÆ°á»›c â€œexport live stateâ€ giáº£. |
+
+### 2.3. Quyáº¿t Ä‘á»‹nh bá»‹ thay tháº¿
+
+| Quyáº¿t Ä‘á»‹nh cÅ© | Thay báº±ng | LÃ½ do |
+| :-- | :-- | :-- |
+| Dictionary toÃ n cá»¥c lÃ  runtime source of truth. | Ä02 â€” SQLite. | Máº¥t dá»¯ liá»‡u khi restart vÃ  khÃ´ng báº£o vá»‡ multi-process race. |
+| Multi-booking cÃ³ thá»ƒ thÃ nh cÃ´ng má»™t pháº§n. | Ä04 â€” atomic all-or-nothing. | TrÃ¡nh tráº¡ng thÃ¡i/hoÃ n tiá»n mÆ¡ há»“. |
+| Wrapper ná»™i bá»™ tá»± nháº­n lÃ  MCP/JSON-RPC chuáº©n. | Ä06 â€” MCP protocol adapter tháº­t. | Contract cÅ© chá»‰ lÃ  mÃ´ phá»ng. |
+| `ThreadingHTTPServer` bind `0.0.0.0` + CORS `*`. | Ä05/Ä07 â€” FastAPI + local perimeter. | Cáº§n validation vÃ  ranh truy cáº­p rÃµ. |
+| Public raw `thought` runtime. | Ä08 â€” safe trace allowlist. | Giáº£m rÃ² rá»‰ reasoning/secret. |
+| CLI migration cÃ³ thá»ƒ tá»± chá»¥p live state v1.0 Ä‘ang cháº¡y. | Ä11 â€” chá»‰ import snapshot legacy ngoÃ i tiáº¿n trÃ¬nh Ä‘Ã£ cÃ³ nguá»“n gá»‘c. | Process má»›i khÃ´ng thá»ƒ Ä‘á»c dictionary cá»§a process cÅ©. |
+
+## 3. Router SPEC
+
+Äá»c Ä‘Ãºng thá»© tá»±:
+
+| # | Tá»‡p | Sá»Ÿ há»¯u contract |
+| :--: | :-- | :-- |
+| 1 | `specs/00-ARCHITECTURE.md` | Má»¥c tiÃªu, non-goals, boundaries, invariants |
+| 2 | `specs/01-CONTRACTS.md` | DDL, DTO, service signatures, canonical errors |
+| 3 | `specs/SPEC-P01-BOOKING-CORE.md` | Persistence, transaction, booking/cancel/canteen |
+| 4 | `specs/SPEC-P02-API-MCP.md` | REST, session, idempotency, MCP, compatibility |
+| 5 | `specs/SPEC-P03-WEB-REALTIME.md` | UI/WebSocket/outbox/trace safety |
+| 6 | `specs/SPEC-P04-QUALITY-MIGRATION.md` | Migration, CI, compatibility, docs/release |
+| 7 | `specs/OPERATIONS.md` | Local rollout, backup, rollback, runbook |
+| 8 | `specs/TESTING-ACCEPTANCE.md` | Test matrix, evidence, Exit Gates |
+
+Náº¿u hai SPEC mÃ¢u thuáº«n, worker dá»«ng gÃ³i bá»‹ áº£nh hÆ°á»Ÿng vÃ  tráº£ láº¡i architect; khÃ´ng tá»± chá»n má»™t nghÄ©a má»›i.
+
+## 4. Work Packages vÃ  model tier
+
+| WP | GÃ³i | Táº§ng | Cháº·n bá»Ÿi |
+| :-- | :-- | :--: | :-- |
+| WP00 | Duyá»‡t bá»™ SPEC | ðŸ”´ | â€” |
+| WP01 | Models, DDL, seed, migration | ðŸŸ  | WP00 |
+| WP02 | Transactional booking/cancel/canteen service | ðŸŸ  | WP01 |
+| WP03 | REST, session, idempotency, chat ledger | ðŸŸ  | WP02 |
+| WP04 | MCP stdio + compatibility alias | ðŸŸ  | WP02 |
+| WP05 | Realtime UI + safe trace | ðŸŸ  | WP03 |
+| WP06 | Unit/contract/integration/concurrency/browser + CI | ðŸŸ  | WP01â€“WP05 |
+| WP07 | Runbook/docs/brain/version sync | ðŸŸ¢ | WP06 |
+| WP08 | Adversarial audit security/race/rollback | ðŸ”´ | WP06â€“WP07 |
+
+ÄÆ°á»ng gÄƒng: WP00 â†’ WP01 â†’ WP02 â†’ WP03 â†’ WP05 â†’ WP06 â†’ WP07 â†’ WP08. WP04 cÃ³ thá»ƒ cháº¡y song song sau WP02.
+
+## 5. Checklist thá»±c thi
+
+### Láº­p káº¿ hoáº¡ch
+- [x] Chá»‘t má»¥c tiÃªu, pháº¡m vi, non-goals vÃ  sá»‘ Ä‘o.
+- [x] Táº¡o package theo Path Invariant.
+- [x] Táº¡o Ä‘á»§ 8 SPEC.
+- [x] Audit contract/router á»Ÿ má»©c planning.
+- [x] Brain hiá»‡n ghi Plan 01 active vÃ  target 1.1.0.
+
+### Thi cÃ´ng
+- [ ] WP01 â€” persistence/migration.
+- [ ] WP02 â€” transactional domain service.
+- [ ] WP03 â€” REST/session/idempotency/chat.
+- [ ] WP04 â€” MCP protocol adapter.
+- [ ] WP05 â€” realtime UI + safe trace.
+- [ ] WP06 â€” tests + CI + RED/mutant evidence.
+- [ ] WP07 â€” docs/brain/runbook/version sync.
+- [ ] WP08 â€” adversarial audit Ä‘á»™c láº­p.
+
+### ÄÃ³ng há»“ sÆ¡
+- [ ] Má»—i handoff cÃ³ report cÃ¹ng Ä‘uÃ´i vÃ  evidence tá»“n táº¡i.
+- [ ] KhÃ´ng report nÃ o cÃ²n ðŸ”/â›”.
+- [ ] G00â€“G14 local Ä‘á»u âœ….
+- [ ] NgÆ°á»i duyá»‡t ghi sign-off cuá»‘i vÃ  Ä‘á»•i tráº¡ng thÃ¡i `âœ… ÄÃƒ HOÃ€N THÃ€NH`.
+
+## 6. Exit Gates local
+
+| Gate | Tráº¡ng thÃ¡i | Äiá»u kiá»‡n báº¯t buá»™c |
+| :-- | :--: | :-- |
+| G00 | âœ… | Bá»™ SPEC Ä‘á»§ 8 tá»‡p; router resolve; planning khÃ´ng cÃ²n contract placeholder. |
+| G01 | â¬œ | Fresh migration: 32 machines, 2 members, 8 menu items; schema/integrity/FK Ä‘Ãºng. |
+| G02 | â¬œ | Booking Ä‘Ã£ commit váº«n tá»“n táº¡i sau restart process. |
+| G03 | â¬œ | 20 contender cÃ¹ng má»™t PC: Ä‘Ãºng 1 success, 19 `PC_UNAVAILABLE`, 0 `DB_BUSY`. |
+| G04 | â¬œ | Multi-seat lá»—i báº¥t ká»³ seat nÃ o: delta booking/seat/key/outbox = 0. |
+| G05 | â¬œ | Input sai/range/type/ID sai: lá»—i Ä‘Ãºng taxonomy, 0 mutation. |
+| G06 | â¬œ | Replay cÃ¹ng idempotency key khÃ´ng nhÃ¢n báº£n; payload khÃ¡c â†’ conflict. |
+| G07 | â¬œ | REST/OpenAPI/auth/ownership/Origin/Host/body-limit tests Ä‘áº¡t. |
+| G08 | â¬œ | MCP client tháº­t initialize/list/call Ä‘á»§ 5 tool; protocol/business errors tÃ¡ch Ä‘Ãºng. |
+| G09 | â¬œ | Realtime + reconnect Ä‘áº¡t; XSS corpus khÃ´ng thá»±c thi script. |
+| G10 | â¬œ | 100 runtime trace events khÃ´ng cÃ³ secret/raw reasoning; correlation/latency há»£p lá»‡. |
+| G11 | â¬œ | Full quality suite exit 0; fail/error/skip/xfail/xpass = 0. |
+| G12 | â¬œ | Existing-DB backup/restore vÃ  fresh-migration fault recovery Ä‘á»u cÃ³ evidence. |
+| G13 | â¬œ | TC01â€“TC05 compatibility Ä‘áº¡t, TC05 khÃ´ng write. |
+| G14 | â¬œ | Docs/link/version matrix Ä‘á»“ng bá»™ 1.1.0; brain template version khÃ´ng Ä‘á»•i. |
+
+G00 chá»‰ xÃ¡c nháº­n planning package hoÃ n chá»‰nh; khÃ´ng Ä‘Æ°á»£c dÃ¹ng G00 Ä‘á»ƒ suy ra application 1.1.0 Ä‘Ã£ thi cÃ´ng.
+
+## 7. Chá»‰ sá»‘ quáº£n trá»‹ há»“ sÆ¡
+
+| Chá»‰ sá»‘ | Hiá»‡n táº¡i |
+| :-- | :--: |
+| Quyáº¿t Ä‘á»‹nh bá»‹ thay tháº¿ sau khi láº­p | 1 |
+| VÃ²ng sá»­a planning do audit contract | 1 |
+| CÃ¢u há»i má»Ÿ do SPEC thiáº¿u | 0 |
+| Lá»—i ðŸ”´ lá»t qua auditor tá»›i ngÆ°á»i | 0 |
+| Application version | 1.0.0 |
+| Target version | 1.1.0 |
