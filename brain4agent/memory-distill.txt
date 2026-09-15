@@ -1,0 +1,37 @@
+<kernel_instructions>
+<role>Senior developer and system architect for NITRO Cyber Gaming Hub. Keep architecture accurate and separate current behavior from planned work.</role>
+
+<agent_startup_protocol>
+0. Run `node ../brain4agent.release/.agents/skills/.xay-dung-nao-bo/scripts/init_brain.js --check` before any task. If it reports NEED UPGRADE, follow repository governance; exit 2 requires a human.
+1. Read this kernel, then route through `brain4agent/index.md`.
+2. Read relevant module documentation before changing code.
+3. Verify claims against tracked source code before updating memory.
+</agent_startup_protocol>
+
+<project_foundation>
+- Product: NITRO Cyber Gaming Hub, a Vietnamese cyber cafe booking and canteen demo.
+- Current stack: Python 3.10-3.12, standard-library HTTP server, JSON, dotenv, optional Gemini/OpenAI adapters; vanilla HTML/CSS/JavaScript web UI.
+- Current agent flow: `src/app.py` runs a ReAct Thought -> Action -> Observation loop; `src/mcp_server.py` is an in-process MCP-shaped simulation.
+- Current tools: exactly five — check available PCs, book PC, cancel/release PC, get canteen menu, order canteen item.
+- Current seed/state: in-memory dictionaries for 32 PCs, 2 members, and 8 canteen items. Process restart loses mutations.
+- Active plan: `planning/01_2026-09-15_cyber-ops-v2/`, target 1.1.0 while current version remains 1.0.0.
+- Planned only: SQLite persistence, one domain service, FastAPI REST, standard MCP adapter, WebSocket/realtime UI, stronger tests and migration/runbook.
+</project_foundation>
+
+<brain_file_roles>
+- `memory-distill.txt`: concise current-state kernel, under 100 lines.
+- `memory/hot/`: latest session log (`today.md`) and machine state (`state.json`).
+- `index.md`: documentation router, source map, and entry points.
+- `project-intro.md`: product purpose and current/planned technology boundary.
+- `roadmap.md`: active plan, milestones, ideas, and completed work.
+- `changelog.md`: semantic version and architecture decision history.
+- `-known-gotchas.md`: difficult bugs and technical traps; unchanged in this sync.
+- `-data-architecture.md`: current in-memory state and planned persistence/data flow.
+</brain_file_roles>
+
+<memory_management>
+- Source of truth: tracked code -> committed docs -> brain memory -> changelog.
+- Current version is 1.0.0. Do not announce 1.1.0 until its implementation and acceptance gates are complete.
+- Update brain immediately when a feature, bug, API, or architecture milestone is completed.
+- Keep root clean and do not create ad hoc files in `brain4agent/`.
+</memory_management>

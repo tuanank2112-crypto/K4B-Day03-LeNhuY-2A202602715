@@ -1,0 +1,42 @@
+{
+  "current_version": "1.0.0",
+  "brain_template_version": "1.7.1",
+  "system_status": "initialized",
+  "last_verification": {
+    "timestamp": "2026-09-15T23:11:54+07:00",
+    "grade": "Grade A Initialized"
+  },
+  "active_plans_completed": 0,
+  "engine_sha": "1e68b141926025230d15ac986b2022c3d70a1e33",
+  "engine_version": "1.13.0",
+  "lang": {
+    "rules": "vi",
+    "reply": {
+      "ngon_ngu": "",
+      "xung_ho": {
+        "goi_user": "",
+        "tu_xung": ""
+      }
+    }
+  },
+  "hub": {
+    "path": ""
+  },
+  "roles": {
+    "family": "",
+    "profiles": {}
+  },
+  "owner": {
+    "name": "",
+    "license": ""
+  },
+  "active_plan": {
+    "id": "01",
+    "path": "planning/01_2026-09-15_cyber-ops-v2",
+    "name": "cyber-ops-v2",
+    "status": "active_planning",
+    "current_version": "1.0.0",
+    "target_version": "1.1.0",
+    "created_at": "2026-09-15T23:11:54+07:00"
+  }
+}
