@@ -13,9 +13,9 @@ verify_manifest(db_path: Path, manifest: DatabaseManifest) -> VerificationResult
 
 Schema version0 chỉ nghĩa file chưa tồn tại hoặc database thực sự trống. Version0 có table lạ → `UNSUPPORTED_SCHEMA`, không đoán cách import. Version1 cùng SHA migration001 → no-op; user_version>1 → `UNSUPPORTED_SCHEMA`; cùng version khác SHA → `MIGRATION_CHECKSUM_MISMATCH`. Migration tạo DDL+seed+schema_migration trong cùng transaction; failure rollback. DDL không dùng sqlite3.executescript theo cách implicit commit ngoài transaction: transaction boundaries phải được kiểm thử bằng fault injection.
 
-`legacy_json` optional được tạo bởi `manage export-legacy`, chỉ import vào DB trống. Format chính xác `{format_version:1,source_base_sha:str,captured_at_ms:int,pcs:dict[str,LegacyPc]}`; LegacyPc gồm zone/specs/status/price_per_hour và optional booked_by/duration_hours/booking_id. Status enum4 giá trị cũ; row BOOKED phải có owner thuộc2 member seed, duration1–24 nếu có, thiếu dùng2; không nhận unknown keys. 32 pc IDs phải khớp seed, không lặng lẽ bỏ máy. Member/menu lấy seed tracked; export không thể tái tạo order/history chưa được persist từ v1.0.
+`legacy_json` là input **optional do người vận hành cung cấp từ ngoài tiến trình v1.0**, chỉ import vào DB trống. Plan 01 không cung cấp hoặc cam kết một `manage export-legacy` có thể đọc mutation trong dictionary của process v1.0 đang chạy. Format chính xác `{format_version:1,source_base_sha:str,captured_at_ms:int,pcs:dict[str,LegacyPc]}`; LegacyPc gồm zone/specs/status/price_per_hour và optional booked_by/duration_hours/booking_id. Status enum4 giá trị cũ; row BOOKED phải có owner thuộc2 member seed, duration1–24 nếu có, thiếu dùng2; không nhận unknown keys. 32 pc IDs phải khớp seed, không lặng lẽ bỏ máy. Member/menu lấy seed tracked; snapshot không thể tái tạo order/history chưa từng được persist từ v1.0.
 
-Import bảo toàn trạng thái/owner/giá/duration hiện có, nhưng legacy booking_id cũ không unique nên tạo UUID5 từ SHA file + pc_id; không cố phục hồi grouping chưa tồn tại. Báo cáo source SHA và counts trong MigrationReport. Sai field/owner/schema → `LEGACY_IMPORT_INVALID`, giữ database đích không đổi. Không tự tạo member giả để thông qua validation.
+Import bảo toàn trạng thái/owner/giá/duration **chỉ trong snapshot legacy đã được cung cấp**; legacy booking_id cũ không unique nên tạo UUID5 từ SHA file + pc_id; không cố phục hồi grouping chưa tồn tại. Báo cáo source SHA và counts trong MigrationReport. Sai field/owner/schema → `LEGACY_IMPORT_INVALID`, giữ database đích không đổi. Không tự tạo member giả để thông qua validation. Không có snapshot hợp lệ ⇒ fresh migration dùng tracked seed; CẤM tuyên bố đã bảo toàn mutation in-memory cũ.
 
 Dependency runtime thêm FastAPI/Uvicorn/MCP SDK và giữ provider dependencies còn dùng; resolver khóa versions thực trong `requirements.lock`; dev deps pytest/httpx/ruff/mypy/pytest-playwright trong `requirements-dev.txt` với pinned versions đã resolve. Không ghi số package chưa xác minh. Python hỗ trợ3.11–3.13, CI chạy3.11 và3.13. App version nguồn `src/cyber_ops/__init__.py::__version__='1.1.0'`, web/MCP health import từ đây. Không thêm package manifest không dùng chỉ để bump version.
 
@@ -67,7 +67,7 @@ Không cập nhật docs thành “đã pass” trước khi có evidence. Artif
 | Lỗi | Caller bắt buộc |
 | :-- | :-- |
 | MIGRATION_CHECKSUM_MISMATCH / UNSUPPORTED_SCHEMA | Dừng startup, giữ file, không tự sửa user_version |
-| LEGACY_IMPORT_INVALID | Trả lỗi field/ID an toàn, sửa bản export có nguồn gốc; không bỏ row |
+| LEGACY_IMPORT_INVALID | Trả lỗi field/ID an toàn, sửa snapshot có nguồn gốc; không bỏ row |
 | BACKUP_VERIFY_FAILED | Không migrate/restore trên backup hỏng |
 | TEST_FAILURE / TEST_SKIPPED / TEST_COUNT_DECREASE | Gate local chưa đạt; sửa hoặc giải trình contract trước tiến tiếp |
 | MUTANT_SURVIVED | Sửa phép đo để làm đỏ, không công bố coverage thay bằng chứng |
@@ -75,10 +75,10 @@ Không cập nhật docs thành “đã pass” trước khi có evidence. Artif
 
 ## 6. BẮT BUỘC / CẤM và vùng cấm
 
-BẮT BUỘC snapshot/checksum backup trước migration DB có dữ liệu; rollback được diễn tập với DB disposable. CẤM destructive downgrade DDL; CẤM sửa migration001 đã phát hành; CẤM xóa test cũ hoặc skip live-provider cases để xanh (chuyển sang fake fixture có assertion rõ). CẤM chứng minh conformance bằng class alias nội bộ thay client MCP thật. CẤM đổi text config5 case để làm test dễ hơn.
+BẮT BUỘC snapshot/checksum backup trước migration **khi đã có SQLite DB với dữ liệu**; rollback được diễn tập với DB disposable theo OPERATIONS R12-A/R12-B. Fresh rollout từ v1.0 không có DB thì không được tạo “backup” giả; migration dùng tracked seed hoặc snapshot legacy hợp lệ do operator cung cấp. CẤM destructive downgrade DDL; CẤM sửa migration001 đã phát hành; CẤM xóa test cũ hoặc skip live-provider cases để xanh (chuyển sang fake fixture có assertion rõ). CẤM chứng minh conformance bằng class alias nội bộ thay client MCP thật. CẤM đổi text config5 case để làm test dễ hơn. CẤM thêm endpoint/IPC export live state v1.0 trong Plan 01.
 
 ## 7. Số đo thật / nghiệm thu local
 
 Base requirements.txt có7 dependency không khóa; src/app.py --all chạy5 case nhưng chỉ đếm completed, không assert nghiệp vụ. Probe atomicity và negative duration hiện thất bại theo TESTING-ACCEPTANCE. Chưa có test suite1.1.0 hoặc số test pass được tuyên bố.
 
-Gate local yêu cầu: migrate32/2/8 và3 booking legacy; migrate lần2 applied=[]; checksum/count unchanged; kill giữa DDL/seed không để schema nửa vời; test fail0/skip0 trên3.11 và3.13; compatibility5/5, mutant killed5/5, docs/version link check exit0. Mọi kết quả phải có machine evidence riêng, không thay bằng câu “test xanh”.
+Gate local yêu cầu: migrate32/2/8 và3 booking legacy; migrate lần2 applied=[]; checksum/count unchanged; kill giữa DDL/seed không để schema nửa vời; test fail0/skip0 trên3.11 và3.13; compatibility5/5, mutant killed5/5, docs/version link check exit0. Rollback G12 phải chứng minh riêng existing-DB backup/restore và fresh-migration fault recovery; không giả định v1.0 có persistent DB. Mọi kết quả phải có machine evidence riêng, không thay bằng câu “test xanh”.

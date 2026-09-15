@@ -27,7 +27,7 @@ BẮT BUỘC trích seed một lần từ dictionary tracked ở base `eb1022a4f
 
 Seed report bắt buộc `{machines:32,members:2,menu_items:8,bookings:3,seats:3}`. Không tạo outbox cho seed: subscriber nhận snapshot đầy đủ khi kết nối. Cấm `INSERT OR REPLACE` ghi đè dữ liệu trên boot. Migrate lần hai không tăng count và không đổi UUID/timestamp/checksum.
 
-Không có DB v1.0 để nâng tại base. Dictionary ở process cũ không phải kho bền vững; nếu người vận hành có state sống cần giữ, chụp export đã xác thực bằng lệnh migration trong P04 trước khi tắt process. Không tự nhận đã phục hồi những giao dịch trước đây chưa được lưu.
+Không có DB v1.0 để nâng tại base. Dictionary của v1.0 là state process-local và không durable; Plan 01 **không được tuyên bố tự động phục hồi mutation chưa có snapshot**. Migration mặc định dùng tracked seed. Chỉ khi người vận hành đã có snapshot legacy ngoài tiến trình, đúng schema P04 và pass validation thì mới được import bằng `legacy_json`. CẤM thêm endpoint/IPC mới chỉ để “cứu” live in-memory state trong Plan 01; nếu cần khả năng đó phải mở kế hoạch riêng. Không tự nhận đã phục hồi những giao dịch trước đây chưa được persist.
 
 ## 3. Transaction book / cancel
 
@@ -78,7 +78,7 @@ Resolve tên món bằng NFC + casefold + strip. Ưu tiên exact match; sau đó
 
 BẮT BUỘC đọc giá/owner/status trong transaction, không dựa vào snapshot UI. BẮT BUỘC persist booking-seat relationship và released seats để audit lịch sử. BẮT BUỘC foreign key trên mọi connection, bao gồm CLI/test.
 
-CẤM dùng machine.booked_by làm nguồn owner thứ hai; CẤM unlock bằng sửa dictionary; CẤM mock runtime fallback khi DB lỗi (che giấu mất dữ liệu); CẤM retry 409 sang máy khác; CẤM auto-release theo duration vì chưa có lifecycle check-in. Thay đổi schema/fee semantics ngoài các công thức trên phải quay lại architect.
+CẤM dùng machine.booked_by làm nguồn owner thứ hai; CẤM unlock bằng sửa dictionary; CẤM mock runtime fallback khi DB lỗi (che giấu mất dữ liệu); CẤM retry 409 sang máy khác; CẤM auto-release theo duration vì chưa có lifecycle check-in. CẤM hứa bảo toàn mutation in-memory v1.0 khi không có snapshot legacy nguồn. Thay đổi schema/fee semantics ngoài các công thức trên phải quay lại architect.
 
 ## 7. Error taxonomy / caller
 
