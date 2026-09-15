@@ -18,7 +18,7 @@ BẮT BUỘC:
 
 G00 KHÔNG được dùng helper trong `tests.acceptance` vì helper đó thuộc WP06. Trình tự bắt buộc:
 1. H01 auditor chạy `python tools/brain_dossier_check.py planning/01_2026-09-15_cyber-ops-v2 --phase dispatch` và redirect stdout vào `evidence/wp00-spec-audit/dossier.txt`.
-2. Auditor tự thiết kế ≥3 cách phá, ghi output máy vào `.txt`, nộp `R01_tham-dinh_wp00-spec-package.md` với dòng cuối `⏳ Chờ phán quyết.`.
+2. Auditor tự thiết kế ≥3 cách phá, ghi output máy vào `.txt`, nộp `R01_tham-dinh_wp00-spec-package.md` với dòng cuối `⏳ Chờ người duyệt.`.
 3. SO đo lại, ghi phán quyết vào R01. Nếu dòng cuối là `✅ DUYỆT`, chạy `python tools/brain_dossier_check.py planning/01_2026-09-15_cyber-ops-v2 --phase ready` → `evidence/wp00-spec-audit/ready.txt`.
 4. Chỉ sau `ready` exit 0 mới đổi G00 thành ✅ và tạo handoff thi công WP01.
 

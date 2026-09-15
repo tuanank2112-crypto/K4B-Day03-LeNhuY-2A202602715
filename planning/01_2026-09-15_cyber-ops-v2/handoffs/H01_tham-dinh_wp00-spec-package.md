@@ -9,11 +9,11 @@
    - So `git diff --stat` với phạm vi; xong khi không có file mã/app ngoài phạm vi do chính auditor tạo.
    - Tự thiết kế ≥3 cách phá KHÁC nhau trên bản sao tạm: tối thiểu broken router, evidence extension khác `.txt`, và trạng thái ready/G00 xanh khi thiếu approved R/evidence. Xong khi mỗi mutant làm checker đỏ; redirect kết quả vào `attacks.txt`.
    - Rà logic không-thể-đạt: mọi gate WP00 phải chạy được trước WP01; không helper thuộc WP06. Xong khi số circular dependency = 0, ghi vào `circular-gates.txt`.
-   - Nộp report theo HANDOFF_PROTOCOL §7/§14; dòng cuối khi worker nộp là `⏳ Chờ phán quyết.`.
+   - Nộp report theo HANDOFF_PROTOCOL §7/§14; dòng cuối khi worker nộp là `⏳ Chờ người duyệt.`.
 4. LUẬT: không `git add -A` · không push · không sửa plan/spec/source · không tự phán `✅` · evidence chỉ `.txt` và là output máy · lệnh dài chạy foreground · Base tự đo · SPEC mâu thuẫn ⇒ báo, không tự chọn nghĩa.
 5. BẢNG GÓI VIỆC → TẦNG:
    | Gói | Tầng | Vì sao |
    | :-- | :--: | :-- |
    | WP00 dossier/spec audit | 🔴 | Cổng kiến trúc + contract trước khi cho phép thi công |
-6. REPORT PHẢI CÓ: dòng 1 khai vai; dòng 2 `Handoff:`; dòng 3 `Base:`; dòng 4 `Head:`; lệnh+exit; test/count; diff-stat; bảng phân công; việc không làm; câu hỏi mở; link tới mọi evidence; dòng cuối `⏳ Chờ phán quyết.`.
+6. REPORT PHẢI CÓ: dòng 1 khai vai; dòng 2 `Handoff:`; dòng 3 `Base:`; dòng 4 `Head:`; lệnh+exit; test/count; diff-stat; bảng phân công; việc không làm; câu hỏi mở; link tới mọi evidence; dòng cuối `⏳ Chờ người duyệt.`.
 7. DÒNG CUỐI: Report: `planning/01_2026-09-15_cyber-ops-v2/reports/R01_tham-dinh_wp00-spec-package.md` · Evidence: `planning/01_2026-09-15_cyber-ops-v2/evidence/wp00-spec-audit/dossier.txt`

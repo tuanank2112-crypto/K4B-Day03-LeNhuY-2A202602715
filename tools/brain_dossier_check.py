@@ -148,6 +148,10 @@ def main() -> int:
         if len(lines) < 4 or not lines[3].startswith("Head: "):
             fail(errors, "R-L4", r.name)
         tail = last_nonempty(text)
+        valid_pending = tail == "⏳ Chờ người duyệt."
+        valid_verdict = tail.startswith(("✅ DUYỆT", "🔁 SỬA:", "⛔ DỪNG:"))
+        if not (valid_pending or valid_verdict):
+            fail(errors, "R-VERDICT-SHAPE", f"{r.name}:{tail}")
         if ns.phase in {"ready", "close"} and not tail.startswith("✅ DUYỆT"):
             fail(errors, "R-VERDICT", f"{r.name}:{tail}")
         if "_tham-dinh_" in r.name and tail.startswith("✅ DUYỆT"):
