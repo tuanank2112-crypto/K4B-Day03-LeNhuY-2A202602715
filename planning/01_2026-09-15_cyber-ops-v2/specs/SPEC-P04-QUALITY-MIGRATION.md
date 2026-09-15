@@ -29,10 +29,10 @@ Lệnh contract (được WP06 hiện thực trước đóng gate):
 python -m compileall -q src
 python -m ruff check src tests
 python -m mypy src
-python -m pytest -q --strict-markers --junitxml=planning/01_2026-09-15_cyber-ops-v2/evidence/quality/pytest.xml
+python -m pytest -q --strict-markers --junitxml=planning/01_2026-09-15_cyber-ops-v2/evidence/quality/pytest-junit.txt
 python -m playwright install chromium
-python -m pytest -q -m browser --junitxml=planning/01_2026-09-15_cyber-ops-v2/evidence/quality/browser.xml
-python -m tests.acceptance verify-junit planning/01_2026-09-15_cyber-ops-v2/evidence/quality/pytest.xml planning/01_2026-09-15_cyber-ops-v2/evidence/quality/browser.xml
+python -m pytest -q -m browser --junitxml=planning/01_2026-09-15_cyber-ops-v2/evidence/quality/browser-junit.txt
+python -m tests.acceptance verify-junit planning/01_2026-09-15_cyber-ops-v2/evidence/quality/pytest-junit.txt planning/01_2026-09-15_cyber-ops-v2/evidence/quality/browser-junit.txt
 ```
 
 Pytest default toàn bộ tests bao gồm browser; lệnh browser riêng chỉ dùng evidence/tái hiện và không làm tăng giả tổng unique tests. Có thể CI chia suite bằng marker, nhưng phải union đầy đủ và báo unique collected count. `verify-junit` exit1 nếu failures/errors/skipped>0, count giảm so baseline cùng matrix, xfail/xpass hoặc thiếu report. Missing dependency/browser fail setup; CẤM importorskip/skipif và `continue-on-error` ở gate bắt buộc.
@@ -60,7 +60,7 @@ TC01–TC05 dùng nguyên câu hỏi/ID/type trong config/test_cases.json; provi
 | `brain4agent/project-intro.md`, `-data-architecture.md` | Rà FastAPI, SQLite, tests/data runtime top-level theo structural extension |
 | `src/cyber_ops/__init__.py` và mọi config có version app | Đồng bộ1.1.0; không đổi brain_template_version |
 
-Không cập nhật docs thành “đã pass” trước khi có evidence. Artifact runtime `data/`, logs/cache/browser downloads phải gitignore; committed evidence chỉ ở planning/.../evidence theo hồ sơ. Không tạo tài liệu tạm ở root.
+Không cập nhật docs thành “đã pass” trước khi có evidence. Artifact runtime `data/`, logs/cache/browser downloads phải gitignore; committed evidence chỉ ở planning/.../evidence theo hồ sơ và mọi evidence file dùng đuôi `.txt` theo HANDOFF_PROTOCOL §14, kể cả nội dung JUnit/JSON. Không tạo tài liệu tạm ở root.
 
 ## 5. Error taxonomy và caller
 

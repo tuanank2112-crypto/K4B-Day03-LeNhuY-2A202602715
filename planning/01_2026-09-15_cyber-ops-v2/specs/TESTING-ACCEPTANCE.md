@@ -11,7 +11,18 @@ BẮT BUỘC:
 4. Các phép đo race chạy nhiều process/thread theo đúng boundary cần bảo vệ; không thay bằng mock lock.
 5. RED proof phải tồn tại trước claim fix; mutant phải từng làm test fail.
 6. Evidence dưới `planning/01_2026-09-15_cyber-ops-v2/evidence/`, là output máy và CẤM sửa tay.
-7. G00 chỉ ✅ sau khi 8 SPEC thật sự nằm trong repo và audit link/dấu nháp exit0.
+7. G00 chỉ ✅ sau khi WP00 🔴 có H01/R01 thẩm định độc lập, R01 dòng cuối `✅ DUYỆT`, và machine evidence `.txt` tồn tại.
+8. Mọi file committed dưới `planning/.../evidence/` BẮT BUỘC đuôi `.txt` theo HANDOFF_PROTOCOL §14, kể cả khi nội dung bên trong là JSON, XML/JUnit hoặc text.
+
+## 1.1. G00 — cổng dossier trước WP01
+
+G00 KHÔNG được dùng helper trong `tests.acceptance` vì helper đó thuộc WP06. Trình tự bắt buộc:
+1. H01 auditor chạy `python tools/brain_dossier_check.py planning/01_2026-09-15_cyber-ops-v2 --phase dispatch` và redirect stdout vào `evidence/wp00-spec-audit/dossier.txt`.
+2. Auditor tự thiết kế ≥3 cách phá, ghi output máy vào `.txt`, nộp `R01_tham-dinh_wp00-spec-package.md` với dòng cuối `⏳ Chờ phán quyết.`.
+3. SO đo lại, ghi phán quyết vào R01. Nếu dòng cuối là `✅ DUYỆT`, chạy `python tools/brain_dossier_check.py planning/01_2026-09-15_cyber-ops-v2 --phase ready` → `evidence/wp00-spec-audit/ready.txt`.
+4. Chỉ sau `ready` exit 0 mới đổi G00 thành ✅ và tạo handoff thi công WP01.
+
+CẤM tạo report/evidence placeholder để làm checker xanh.
 
 ## 2. Baseline RED proof trên base SHA
 
@@ -27,7 +38,7 @@ $base = "eb1022a4f801215a691cfd0b6f5e313274618a6f"
 $wt = Join-Path $env:TEMP "nitro-base-eb1022a"
 git worktree add --detach $wt $base
 python -m tests.acceptance probe-base --repo $wt `
-  --out planning/01_2026-09-15_cyber-ops-v2/evidence/baseline/base-probe.json
+  --out planning/01_2026-09-15_cyber-ops-v2/evidence/baseline/base-probe.txt
 $probeExit = $LASTEXITCODE
 git worktree remove --force $wt
 exit $probeExit
@@ -84,16 +95,16 @@ python -m ruff check src tests
 python -m mypy src
 
 python -m pytest -q --strict-markers `
-  --junitxml=planning/01_2026-09-15_cyber-ops-v2/evidence/quality/pytest.xml
+  --junitxml=planning/01_2026-09-15_cyber-ops-v2/evidence/quality/pytest-junit.txt
 
 python -m playwright install chromium
 
 python -m pytest -q -m browser `
-  --junitxml=planning/01_2026-09-15_cyber-ops-v2/evidence/quality/browser.xml
+  --junitxml=planning/01_2026-09-15_cyber-ops-v2/evidence/quality/browser-junit.txt
 
 python -m tests.acceptance verify-junit `
-  planning/01_2026-09-15_cyber-ops-v2/evidence/quality/pytest.xml `
-  planning/01_2026-09-15_cyber-ops-v2/evidence/quality/browser.xml
+  planning/01_2026-09-15_cyber-ops-v2/evidence/quality/pytest-junit.txt `
+  planning/01_2026-09-15_cyber-ops-v2/evidence/quality/browser-junit.txt
 ```
 
 `verify-junit` exit `1` nếu:
@@ -108,21 +119,21 @@ Lệnh browser riêng chỉ tạo evidence/reproduce; tổng unique tests không
 
 | Gate | Phép đo bắt buộc | Kỳ vọng | Evidence tối thiểu |
 | :-- | :-- | :-- | :-- |
-| G00 | `tests.acceptance audit-specs` | đủ 8 SPEC, 0 dấu nháp, 0 broken link, router khớp | `planning/spec-audit.json` |
-| G01 | fresh migrate + inspect | schema1; 32 machines, 2 members, 8 menu, 3 active bookings/seats; integrity ok/FK0 | `migration/fresh.json` |
-| G02 | book → stop process → process mới read | cùng booking_id/seat; không mất mutation | `migration/restart.json` |
-| G03 | 20 contender cùng `VIP-08` trên DB fresh có PC available | exactly success=1, PC_UNAVAILABLE=19, DB_BUSY=0 | `concurrency/book-race.json` |
-| G04 | group book có 1 PC invalid/unavailable + fault after first seat | delta booking/seat/idempotency/outbox =0 | `transactions/all-or-nothing.json` |
-| G05 | invalid duration/quantity/held/id/bool/extra field | đúng code/status; delta business=0 | `validation/negative.json` |
-| G06 | replay cùng key/payload + cùng key khác payload | replay cùng result/record count; mismatch=IDEMPOTENCY_CONFLICT | `idempotency/replay.json` |
-| G07 | REST/OpenAPI/auth/ownership/origin/body limit | status/schema đúng; actor khác không mutation | `api/rest.xml`, `api/security.json` |
-| G08 | MCP initialize + tools/list + tools/call đủ 5 tool + invalid protocol | protocol/business error tách đúng; structuredContent schema đúng | `mcp/conformance.json` |
-| G09 | 2 browser contexts + reconnect + 20 XSS payload | event p95≤1000ms local; snapshot đúng; 0 script/dialog execution | `web/browser.xml`, `web/latency.json` |
-| G10 | 100 runtime trace events | 0 field/raw secret cấm; correlation ID valid; latency≥0 | `security/trace-redaction.json` |
-| G11 | full quality commands | exit0; fail/error/skip/xfail/xpass=0 | `quality/*.xml`, `quality/verify-junit.txt` |
-| G12 | OPERATIONS R12-A + R12-B | restore manifest/SHA/count khớp; fresh fault không schema nửa vời | `operations/rollback-*.json/txt` |
-| G13 | TC01–TC05 qua fake provider + service thật | completed5; expected tool sequence/result; TC05 0 write | `compatibility/tc01-tc05.json` |
-| G14 | version/doc/link audit | app=1.1.0 mọi nguồn; brain template không đổi; 0 broken link | `release/docs-version.json` |
+| G00 | `python tools/brain_dossier_check.py planning/01_2026-09-15_cyber-ops-v2 --phase ready` | đủ 8 SPEC, 0 dấu nháp, 0 broken link, router khớp | `wp00-spec-audit/ready.txt` |
+| G01 | fresh migrate + inspect | schema1; 32 machines, 2 members, 8 menu, 3 active bookings/seats; integrity ok/FK0 | `migration/fresh.txt` |
+| G02 | book → stop process → process mới read | cùng booking_id/seat; không mất mutation | `migration/restart.txt` |
+| G03 | 20 contender cùng `VIP-08` trên DB fresh có PC available | exactly success=1, PC_UNAVAILABLE=19, DB_BUSY=0 | `concurrency/book-race.txt` |
+| G04 | group book có 1 PC invalid/unavailable + fault after first seat | delta booking/seat/idempotency/outbox =0 | `transactions/all-or-nothing.txt` |
+| G05 | invalid duration/quantity/held/id/bool/extra field | đúng code/status; delta business=0 | `validation/negative.txt` |
+| G06 | replay cùng key/payload + cùng key khác payload | replay cùng result/record count; mismatch=IDEMPOTENCY_CONFLICT | `idempotency/replay.txt` |
+| G07 | REST/OpenAPI/auth/ownership/origin/body limit | status/schema đúng; actor khác không mutation | `api/rest.txt`, `api/security.txt` |
+| G08 | MCP initialize + tools/list + tools/call đủ 5 tool + invalid protocol | protocol/business error tách đúng; structuredContent schema đúng | `mcp/conformance.txt` |
+| G09 | 2 browser contexts + reconnect + 20 XSS payload | event p95≤1000ms local; snapshot đúng; 0 script/dialog execution | `web/browser.txt`, `web/latency.txt` |
+| G10 | 100 runtime trace events | 0 field/raw secret cấm; correlation ID valid; latency≥0 | `security/trace-redaction.txt` |
+| G11 | full quality commands | exit0; fail/error/skip/xfail/xpass=0 | `quality/*.txt` |
+| G12 | OPERATIONS R12-A + R12-B | restore manifest/SHA/count khớp; fresh fault không schema nửa vời | `operations/rollback-*.txt` |
+| G13 | TC01–TC05 qua fake provider + service thật | completed5; expected tool sequence/result; TC05 0 write | `compatibility/tc01-tc05.txt` |
+| G14 | version/doc/link audit | app=1.1.0 mọi nguồn; brain template không đổi; 0 broken link | `release/docs-version.txt` |
 
 G00–G14 đều là `local`; không có server/production gate trong hồ sơ này.
 
@@ -241,7 +252,7 @@ Harness contract:
 ```powershell
 python -m tests.acceptance run-mutants `
   --mutants unique-guard,partial-seat-commit,ownership-bypass,xss-sink,outbox-before-commit `
-  --out planning/01_2026-09-15_cyber-ops-v2/evidence/quality/mutants.json
+  --out planning/01_2026-09-15_cyber-ops-v2/evidence/quality/mutants.txt
 ```
 
 Mỗi mutant:

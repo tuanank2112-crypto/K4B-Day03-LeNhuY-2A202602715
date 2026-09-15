@@ -1,20 +1,17 @@
-# Session Memory — 2026-09-15
+# Session Memory — 2026-09-16
 
-Updated: `2026-09-15` | Current project version: `v1.0.0` | Active target: `v1.1.0` (planning)
+Updated: `2026-09-16` | Current project version: `v1.0.0` | Active target: `v1.1.0` (planning / WP00 audit pending)
 
 ## Session result
 
-- Brain boot check passed with exit 0; no engine upgrade was needed.
-- Read `AGENTS.md`, `nao-dong-bo/SKILL.md`, Plan 01, brain core files, and tracked `HEAD` source under `src/`, `web/`, `config/`, and `README.md`.
-- Confirmed product identity: NITRO Cyber Gaming Hub.
-- Confirmed current stack: Python, stdlib HTTP server, vanilla web UI, ReAct loop, and in-process MCP simulation.
-- Confirmed current inventory: 32 PCs, 2 members, 8 canteen items, five tool schemas/router entries.
-- Confirmed current state is in-memory and resets on process restart.
-- Registered `planning/01_2026-09-15_cyber-ops-v2/` as active. Its SQLite, domain service, FastAPI, standard MCP, realtime, migration, and stronger acceptance work remain planned.
-- No module docs were changed because this sync records plan state and does not change code or API contracts.
+- Compared the downstream brain state with `Fitc84/brain4agent-release` release branch at engine `1.13.0`, template `1.7.1`.
+- Confirmed the downstream `engine_sha` already equals public release `1e68b141926025230d15ac986b2022c3d70a1e33`; no brain-engine upgrade is required.
+- Confirmed all six managed brain skills match release; the missing behavior was application of HANDOFF_PROTOCOL, not missing skill bytes.
+- Found governance regressions in Plan 01: WP00 🔴 had no independent dossier audit; G00 was prematurely green; G00 depended on a WP06 helper; normalized plan had lost timestamp/flip-cost and WBS estimate fields; evidence filenames used `.json`/`.xml` despite dossier protocol requiring `.txt`.
+- Corrective planning work: reset G00/status, restore plan governance fields, create H01 WP00 audit handoff, align evidence naming, and add a project-local dossier checker.
+- Reports/evidence placeholders were deliberately not created: protocol requires real worker/auditor report and machine stdout evidence.
 
 ## Verification notes
 
-- Baseline commit inspected: `eb1022a4f801215a691cfd0b6f5e313274618a6f`.
-- Staged brain4agent governance files, Claude agents, and Plan 01 specs for local commit.
-- Push to remote held pending explicit confirmation as mandated by Rule L.3 and governance protocol.
+- Brain source references: `brain4agent-release/docs/HANDOFF_PROTOCOL.md` §11–§14 and `UNIVERSAL_AGENT_GUIDE.md`.
+- Next legal transition: auditor executes H01, submits R01 + `.txt` evidence; SO re-measures and only then may mark G00 ✅ and dispatch WP01.

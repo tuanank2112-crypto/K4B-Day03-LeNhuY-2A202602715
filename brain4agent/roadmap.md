@@ -2,7 +2,7 @@
 
 ## Active plan
 
-`planning/01_2026-09-15_cyber-ops-v2/` is the active MINOR upgrade plan. Current version is `1.0.0`; target version is `1.1.0`. The target is planning metadata only and is not a released version.
+`planning/01_2026-09-15_cyber-ops-v2/` is the active MINOR upgrade plan. Current version is `1.0.0`; target version is `1.1.0`. The target is planning metadata only and is not a released version. The eight SPEC files are complete, but WP00 red-tier independent audit is pending; WP01 must not start before G00 is approved with dossier evidence.
 
 ### Milestone checklist
 
@@ -10,13 +10,16 @@
 - [x] Record inventory baseline: 32 PCs, 2 members, and 8 canteen items.
 - [x] Mark current versus planned architecture in project intro and data architecture.
 - [x] Register Plan 01 as active in hot state and roadmap.
-- [ ] Complete and approve the full Plan 01 SPEC package.
+- [x] Complete the eight-file Plan 01 SPEC package.
+- [x] Add project-local dossier guardrail derived from brain4agent HANDOFF_PROTOCOL §11–§14.
+- [x] Create H01 independent WP00 audit handoff.
+- [ ] Receive R01 + machine evidence `.txt`, SO re-measure, and approve G00.
 - [ ] WP01-WP02: implement SQLite persistence, migration, and transactional domain services.
 - [ ] WP03-WP04: implement FastAPI REST/session/idempotency and standard MCP adapter.
 - [ ] WP05: implement realtime web updates and trace redaction.
 - [ ] WP06: add unit, contract, integration, concurrency, and browser acceptance evidence.
 - [ ] WP07-WP08: update module docs, runbook, SemVer 1.1.0, and independent security/race/rollback review.
-- [ ] Close Plan 01 only after all local Exit Gates and evidence are complete.
+- [ ] Close Plan 01 only after all local Exit Gates and dossier evidence are complete.
 
 ## Planned direction
 

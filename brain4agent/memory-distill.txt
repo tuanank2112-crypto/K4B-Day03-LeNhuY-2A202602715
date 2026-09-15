@@ -14,8 +14,9 @@
 - Current agent flow: `src/app.py` runs a ReAct Thought -> Action -> Observation loop; `src/mcp_server.py` is an in-process MCP-shaped simulation.
 - Current tools: exactly five — check available PCs, book PC, cancel/release PC, get canteen menu, order canteen item.
 - Current seed/state: in-memory dictionaries for 32 PCs, 2 members, and 8 canteen items. Process restart loses mutations.
-- Active plan: `planning/01_2026-09-15_cyber-ops-v2/`, target 1.1.0 while current version remains 1.0.0.
+- Active plan: `planning/01_2026-09-15_cyber-ops-v2/`, target 1.1.0 while current version remains 1.0.0; SPEC complete, WP00 independent audit pending.
 - Planned only: SQLite persistence, one domain service, FastAPI REST, standard MCP adapter, WebSocket/realtime UI, stronger tests and migration/runbook.
+- Dossier invariant: 📐 planning ≠ 🚀 dispatch. Before claiming “ready to implement” or marking a 🔴 gate green, require on-disk Handoff → independent Report with final `✅ DUYỆT` → machine evidence `.txt`; never use a gate helper that is only created by a later WP. Run `tools/brain_dossier_check.py` for planning/dispatch/ready/close checks; external HANDOFF_PROTOCOL remains authoritative.
 </project_foundation>
 
 <brain_file_roles>
@@ -25,13 +26,13 @@
 - `project-intro.md`: product purpose and current/planned technology boundary.
 - `roadmap.md`: active plan, milestones, ideas, and completed work.
 - `changelog.md`: semantic version and architecture decision history.
-- `-known-gotchas.md`: difficult bugs and technical traps; unchanged in this sync.
+- `-known-gotchas.md`: difficult bugs and technical/governance traps.
 - `-data-architecture.md`: current in-memory state and planned persistence/data flow.
 </brain_file_roles>
 
 <memory_management>
-- Source of truth: tracked code -> committed docs -> brain memory -> changelog.
+- Source of truth: tracked code -> committed docs/SPEC+dossier -> brain memory -> changelog.
 - Current version is 1.0.0. Do not announce 1.1.0 until its implementation and acceptance gates are complete.
-- Update brain immediately when a feature, bug, API, or architecture milestone is completed.
+- Update brain immediately when a feature, bug, API, architecture, or planning-governance milestone is completed.
 - Keep root clean and do not create ad hoc files in `brain4agent/`.
 </memory_management>

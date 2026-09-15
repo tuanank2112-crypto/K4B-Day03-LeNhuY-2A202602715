@@ -34,7 +34,7 @@
     "id": "01",
     "path": "planning/01_2026-09-15_cyber-ops-v2",
     "name": "cyber-ops-v2",
-    "status": "active_planning",
+    "status": "awaiting_wp00_audit",
     "current_version": "1.0.0",
     "target_version": "1.1.0",
     "created_at": "2026-09-15T23:11:54+07:00"
